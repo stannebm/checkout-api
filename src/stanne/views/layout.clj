@@ -1,4 +1,4 @@
-(ns fpx-app.views.layout
+(ns stanne.views.layout
   (:require [hiccup.core :refer [html]]))
 
 (defn main-layout [body]

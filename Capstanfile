@@ -9,8 +9,8 @@ base: cloudius/osv-openjdk8
 #
 # The command line passed to OSv to start up the application.
 #
-#cmdline: /java.so -cp /fpx-app/app.jar clojure.main -m fpx-app
-cmdline: /java.so -jar /fpx-app/app.jar
+#cmdline: /java.so -cp /stanne/app.jar clojure.main -m stanne
+cmdline: /java.so -jar /stanne/app.jar
 
 #
 # The command to use to build the application.
@@ -25,5 +25,5 @@ cmdline: /java.so -jar /fpx-app/app.jar
 # List of files that are included in the generated image.
 #
 files:
-  /fpx-app/app.jar: ./target/fpx-app-0.0.1-SNAPSHOT-standalone.jar
+  /stanne/app.jar: ./target/stanne-0.0.1-SNAPSHOT-standalone.jar
 

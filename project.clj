@@ -1,4 +1,4 @@
-(defproject fpx-app "0.0.1-SNAPSHOT"
+(defproject stanne "0.0.1-SNAPSHOT"
   :description "FPX integration"
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [io.pedestal/pedestal.service "0.5.9"]
@@ -15,5 +15,5 @@
                    :dependencies [[integrant/repl "0.3.2"]
                                   [io.pedestal/pedestal.service-tools "0.5.9"]]}
              :repl {:repl-options {:init-ns dev}}
-             :uberjar {:aot [fpx-app.system]}}
-  :main ^{:skip-aot true} fpx-app.system)
+             :uberjar {:aot [stanne.system]}}
+  :main ^{:skip-aot true} stanne.system)

@@ -1,9 +1,9 @@
-(ns fpx-app.system
+(ns stanne.system
   (:gen-class)
   (:require [integrant.core :as ig]
             [io.pedestal.http :as pedestal]
-            [fpx-app.server :as server]
-            [fpx-app.routes :refer [routes]]))
+            [stanne.server :as server]
+            [stanne.routes :refer [routes]]))
 
 (defn config [env]
   {:pedestal/routes {}

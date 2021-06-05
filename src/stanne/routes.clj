@@ -1,6 +1,6 @@
-(ns fpx-app.routes
+(ns stanne.routes
   (:require
-            [fpx-app.views.layout :refer [main-layout]]
+            [stanne.views.layout :refer [main-layout]]
             [io.pedestal.http :refer [html-body]]
             [io.pedestal.http.route :as route]
             [ring.util.response :as r]))

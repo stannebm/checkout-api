@@ -1,4 +1,4 @@
-(ns fpx-app.server
+(ns stanne.server
   (:gen-class) ; for -main method in uberjar
   (:require [io.pedestal.http :as pedestal]
             [io.pedestal.http.route :as route]))
