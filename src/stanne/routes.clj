@@ -2,9 +2,10 @@
   (:require
    [stanne.views.layout :refer [main-layout]]
    [integrant.core :as ig]
-   [io.pedestal.http :refer [html-body]]
+   [io.pedestal.http :as http]
    [io.pedestal.http.route :as route]
-   [ring.util.response :as r]))
+   [ring.util.response :as r]
+   [io.pedestal.interceptor :refer [interceptor]]))
 
 (defn about
   [_]
@@ -12,14 +13,22 @@
                       (clojure-version)
                       (route/url-for ::about))))
 (defn home
-  [_]
-  (r/response (main-layout "content goes here")))
+  [request]
+  (prn (:fpx-config request))
+  (r/response (main-layout (str (:fpx-config request)))))
 
-(defn routes []
-  #{["/" :get [html-body `home]]
-    ["/about" :get [html-body `about]]})
-
-(defmethod ig/init-key ::routes
+(defmethod ig/init-key ::main
   [_ _]
   (prn "init routes..")
-  (routes))
+  #{["/" :get [http/html-body `home]]
+    ["/about" :get [http/html-body `about]]})
+
+(defn fpx-config-interceptor [fpx-config]
+  (interceptor
+   {:name ::fpx-config
+    :enter (fn [context]
+             (update context :request assoc :fpx-config fpx-config))}))
+
+(defmethod ig/init-key ::interceptors
+  [_ fpx-config]
+  [(fpx-config-interceptor fpx-config)])

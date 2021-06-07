@@ -1,16 +1,19 @@
 (ns stanne.system
   (:gen-class)
-  (:require [integrant.core :as ig]))
+  (:require
+   [integrant.core :as ig]
+   [stanne.fpx :as fpx]
+   [stanne.routes :as routes]
+   [stanne.server :as server]))
 
 (defn config [env]
-  (let [config-map
-        {:stanne.fpx/endpoints {:env env}
-         :stanne.routes/routes {}
-         :stanne.server/config {:routes (ig/ref :stanne.routes/routes)
-                                :env env}
-         :stanne.server/server {:config (ig/ref :stanne.server/config)}}]
-    (ig/load-namespaces config-map)
-    config-map))
+  {::fpx/config {:env env}
+   ::routes/main {}
+   ::routes/interceptors {:fpx-config (ig/ref ::fpx/config)}
+   ::server/config {:routes (ig/ref ::routes/main)
+                    :interceptors (ig/ref ::routes/interceptors)
+                    :env env}
+   ::server/server {:config (ig/ref ::server/config)}})
 
 (defn -main []
   (ig/init (config :prod)))
