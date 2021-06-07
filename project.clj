@@ -1,5 +1,5 @@
 (defproject stanne "0.0.1-SNAPSHOT"
-  :description "FPX integration"
+  :description "StAnne FPX integration"
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [io.pedestal/pedestal.service "0.5.9"]
                  [io.pedestal/pedestal.jetty "0.5.9"]
@@ -8,7 +8,8 @@
                  [org.slf4j/jcl-over-slf4j "1.7.26"]
                  [org.slf4j/log4j-over-slf4j "1.7.26"]
                  [integrant "0.8.0"]
-                 [hiccup "1.0.5"]]
+                 [hiccup "1.0.5"]
+                 [http-kit "2.5.3"]]
   :min-lein-version "2.0.0"
   :resource-paths ["config", "resources"]
   :profiles {:dev {:source-paths ["dev/src"]

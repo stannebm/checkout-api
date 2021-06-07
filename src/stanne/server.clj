@@ -1,7 +1,9 @@
 (ns stanne.server
   (:gen-class) ; for -main method in uberjar
-  (:require [io.pedestal.http :as pedestal]
-            [io.pedestal.http.route :as route]))
+  (:require
+   [integrant.core :as ig]
+   [io.pedestal.http :as pedestal]
+   [io.pedestal.http.route :as route]))
 
 (defn- production-config [routes]
   {:env :prod
@@ -15,18 +17,28 @@
                                  :h2? false
                                  :ssl? false}})
 
-(defn- development-config-extension []
-  {:env :dev
-   ::pedestal/join? false
-   ::pedestal/allowed-origins
-   {:creds true
-    :allowed-origins (constantly true)}
-   ::pedestal/secure-headers
-   {:content-security-policy-settings {:object-src "'none'"}}})
+(defn- development-config [routes]
+  (merge (production-config routes)
+         {:env :dev
+          ::pedestal/join? false
+          ::pedestal/allowed-origins
+          {:creds true
+           :allowed-origins (constantly true)}
+          ::pedestal/secure-headers
+          {:content-security-policy-settings {:object-src "'none'"}}}))
 
-(defn pedestal-config [routes env]
-  (let [prod-config (production-config routes)
-        dev-config (development-config-extension)]
-    (case env
-      :prod prod-config
-      :dev (merge prod-config dev-config))))
+(defmethod ig/init-key ::config
+  [_ {:keys [routes env]}]
+  (case env
+    :prod (production-config routes)
+    :dev (development-config routes)))
+
+(defmethod ig/init-key ::server
+  [_ {:keys [config]}]
+  (-> config
+      pedestal/create-server
+      pedestal/start))
+
+(defmethod ig/halt-key! ::server
+  [_ server]
+  (pedestal/stop server))
