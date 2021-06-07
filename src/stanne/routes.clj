@@ -14,8 +14,8 @@
                       (route/url-for ::about))))
 (defn home
   [request]
-  (prn (:fpx-config request))
-  (r/response (main-layout (str (:fpx-config request)))))
+  (r/response (main-layout (str
+                            (:app-env request)))))
 
 (defmethod ig/init-key ::main
   [_ _]
@@ -23,12 +23,12 @@
   #{["/" :get [http/html-body `home]]
     ["/about" :get [http/html-body `about]]})
 
-(defn fpx-config-interceptor [fpx-config]
+(defn app-env [env]
   (interceptor
-   {:name ::fpx-config
+   {:name ::app-env
     :enter (fn [ctx]
-             (update ctx :request assoc :fpx-config fpx-config))}))
+             (update ctx :request assoc :app-env env))}))
 
 (defmethod ig/init-key ::interceptors
-  [_ fpx-config]
-  [(fpx-config-interceptor fpx-config)])
+  [_ env]
+  [(app-env (:env env))])

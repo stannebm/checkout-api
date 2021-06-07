@@ -1,11 +1,8 @@
 (ns stanne.fpx
   (:require
-   [integrant.core :as ig]
    [org.httpkit.client :as http]))
 
-(defmethod ig/init-key ::config
-  ;; we could change this to use ENVIRONMENT VARIABLE (12-factor) with aero
-  [_ {:keys [env]}]
+(defn config [env]
   (merge {:merchant-key "/etc/fpx/EX00011982.key"}
          (case env
            :prod

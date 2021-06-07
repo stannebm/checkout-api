@@ -6,6 +6,4 @@
 
 (comment
   (go)
-  (reset)
-  (require '[clojure.tools.namespace.repl :refer [refresh]])
-  (refresh))
+  (reset))
