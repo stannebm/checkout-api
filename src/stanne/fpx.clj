@@ -4,16 +4,20 @@
    [org.httpkit.client :as http]))
 
 (defmethod ig/init-key ::config
+  ;; we could change this to use ENVIRONMENT VARIABLE (12-factor) with aero
   [_ {:keys [env]}]
-  (case env
-    :prod
-    {:endpoints {:txn-request "https://www.mepsfpx.com.my/FPXMain/seller2DReceiver.jsp"
-                 :txn-cancel "https://www.mepsfpx.com.my/FPXMain/FPXMain/sellerReqCancel.jsp"
-                 :bank-list "https://www.mepsfpx.com.my/FPXMain/RetrieveBankList"}}
-    :dev
-    {:endpoints {:txn-request "https://uat.mepsfpx.com.my/FPXMain/seller2DReceiver.jsp"
-                 :txn-cancel "https://uat.mepsfpx.com.my/FPXMain/FPXMain/sellerReqCancel.jsp"
-                 :bank-list "https://uat.mepsfpx.com.my/FPXMain/RetrieveBankList"}}))
+  (merge {:merchant-key "/etc/fpx/EX00011982.key"}
+         (case env
+           :prod
+           {:fpx-cert "/etc/fpx/fpxprod_Merchant.cer"
+            :endpoints {:txn-request "https://www.mepsfpx.com.my/FPXMain/seller2DReceiver.jsp"
+                        :txn-cancel "https://www.mepsfpx.com.my/FPXMain/FPXMain/sellerReqCancel.jsp"
+                        :bank-list "https://www.mepsfpx.com.my/FPXMain/RetrieveBankList"}}
+           :dev
+           {:fpx-cert "/etc/fpx/fpxuat.cer"
+            :endpoints {:txn-request "https://uat.mepsfpx.com.my/FPXMain/seller2DReceiver.jsp"
+                        :txn-cancel "https://uat.mepsfpx.com.my/FPXMain/FPXMain/sellerReqCancel.jsp"
+                        :bank-list "https://uat.mepsfpx.com.my/FPXMain/RetrieveBankList"}})))
 
 (comment
   (let [{:keys [status body error]} @(http/get "http://localhost:3000/path")]

@@ -26,8 +26,8 @@
 (defn fpx-config-interceptor [fpx-config]
   (interceptor
    {:name ::fpx-config
-    :enter (fn [context]
-             (update context :request assoc :fpx-config fpx-config))}))
+    :enter (fn [ctx]
+             (update ctx :request assoc :fpx-config fpx-config))}))
 
 (defmethod ig/init-key ::interceptors
   [_ fpx-config]
