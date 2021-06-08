@@ -3,28 +3,29 @@
    [clojure.string :as str]
    [org.httpkit.client :as http]
    [stanne.fpx.common :refer [config]]
-   [stanne.utils :as utils]))
+   [stanne.fpx.utils :as utils]))
 
-(def checksum-fields [:fpx_buyerAccNo
-                      :fpx_buyerBankBranch
-                      :fpx_buyerBankId
-                      :fpx_buyerEmail
-                      :fpx_buyerIban
-                      :fpx_buyerId
-                      :fpx_buyerName
-                      :fpx_makerName
-                      :fpx_msgToken
-                      :fpx_msgType
-                      :fpx_productDesc
-                      :fpx_sellerBankCode
-                      :fpx_sellerExId
-                      :fpx_sellerExOrderNo
-                      :fpx_sellerId
-                      :fpx_sellerOrderNo
-                      :fpx_sellerTxnTime
-                      :fpx_txnAmount
-                      :fpx_txnCurrency
-                      :fpx_version])
+(def ^:private checksum-fields
+  [:fpx_buyerAccNo
+   :fpx_buyerBankBranch
+   :fpx_buyerBankId
+   :fpx_buyerEmail
+   :fpx_buyerIban
+   :fpx_buyerId
+   :fpx_buyerName
+   :fpx_makerName
+   :fpx_msgToken
+   :fpx_msgType
+   :fpx_productDesc
+   :fpx_sellerBankCode
+   :fpx_sellerExId
+   :fpx_sellerExOrderNo
+   :fpx_sellerId
+   :fpx_sellerOrderNo
+   :fpx_sellerTxnTime
+   :fpx_txnAmount
+   :fpx_txnCurrency
+   :fpx_version])
 
 (defn- authorization-request [{:keys [exchange-id seller-id msg-token fpx-version pki endpoints]}]
   (let [msg-type "AR"
@@ -61,3 +62,4 @@
         resp @(http/post url {:form-params form-params
                               :as :text})]
     resp))
+
