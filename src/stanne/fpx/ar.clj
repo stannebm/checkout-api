@@ -2,7 +2,8 @@
   (:require
    [clojure.string :as str]
    [org.httpkit.client :as http]
-   [stanne.signature :as sig]))
+   [stanne.fpx.common :refer [config]]
+   [stanne.utils :as utils]))
 
 (def checksum-fields [:fpx_buyerAccNo
                       :fpx_buyerBankBranch
@@ -27,7 +28,7 @@
 
 (defn- authorization-request [{:keys [exchange-id seller-id msg-token fpx-version pki endpoints]}]
   (let [msg-type "AR"
-        timestamp (sig/timestamp-id)
+        timestamp (utils/timestamp-id)
         form-params {:fpx_msgType "AR"
                      :fpx_msgToken "01"
                      :fpx_sellerExId exchange-id
@@ -50,7 +51,7 @@
                      :fpx_version fpx-version}
         validation (str/join "|" ((apply juxt checksum-fields) form-params))
         checksum (-> validation
-                     (sig/sign {:private-key (:merchant-key pki)})
+                     (utils/sign {:private-key (:merchant-key pki)})
                      (str/upper-case))]
     {:url (:auth-request endpoints)
      :form-params (assoc form-params :fpx_checkSum checksum)}))

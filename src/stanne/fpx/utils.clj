@@ -1,8 +1,8 @@
-(ns stanne.fpx.signature
+(ns stanne.fpx.utils
   (:require
+   [buddy.core.codecs :refer [bytes->hex hex->bytes]]
    [buddy.core.dsa :as dsa]
-   [buddy.core.keys :as keys]
-   [buddy.core.codecs :refer [bytes->hex hex->bytes]])
+   [buddy.core.keys :as keys])
   (:import
    java.security.Signature))
 

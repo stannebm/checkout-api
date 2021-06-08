@@ -1,16 +1,16 @@
 (ns stanne.fpx.be
   (:require
-   [stanne.fpx.common :refer [config]]
    [clojure.string :as str]
    [org.httpkit.client :as http]
-   [stanne.fpx.signature :as sig]))
+   [stanne.fpx.common :refer [config]]
+   [stanne.fpx.utils :as utils]))
 
 (defn- bank-list-request [{:keys [exchange-id msg-token fpx-version pki endpoints]}]
   (let [msg-type "BE"
         url (:bank-list endpoints)
         validation (str/join "|" [msg-token msg-type exchange-id fpx-version])
         checksum (-> validation
-                     (sig/sign {:private-key (:merchant-key pki)}))
+                     (utils/sign {:private-key (:merchant-key pki)}))
         form-params {:fpx_msgType msg-type
                      :fpx_msgToken msg-token
                      :fpx_sellerExId exchange-id
