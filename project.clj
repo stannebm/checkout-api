@@ -10,9 +10,12 @@
                  [integrant "0.8.0"]
                  [hiccup "1.0.5"]
                  [http-kit "2.5.3"]
+                 ;; [org.bouncycastle/bcprov-jdk15 "1.46"]
+                 ;; [commons-io/commons-io "2.4"]
                  [buddy/buddy-core "1.10.1"]]
   :min-lein-version "2.0.0"
   :resource-paths ["config", "resources"]
+  ;; :java-source-paths ["interop"]
   :profiles {:dev {:source-paths ["dev/src"]
                    :dependencies [[integrant/repl "0.3.2"]
                                   [io.pedestal/pedestal.service-tools "0.5.9"]]}

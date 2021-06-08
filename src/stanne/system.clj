@@ -2,8 +2,12 @@
   (:gen-class)
   (:require
    [integrant.core :as ig]
+   [org.httpkit.client]
+   [org.httpkit.sni-client :as sni-client]
    [stanne.routes :as routes]
    [stanne.server :as server]))
+
+(alter-var-root #'org.httpkit.client/*default-client* (fn [_] sni-client/default-client))
 
 (defn config [env]
   {::routes/main {}
