@@ -9,7 +9,8 @@
                  [org.slf4j/log4j-over-slf4j "1.7.26"]
                  [integrant "0.8.0"]
                  [hiccup "1.0.5"]
-                 [http-kit "2.5.3"]]
+                 [http-kit "2.5.3"]
+                 [buddy/buddy-core "1.10.1"]]
   :min-lein-version "2.0.0"
   :resource-paths ["config", "resources"]
   :profiles {:dev {:source-paths ["dev/src"]
