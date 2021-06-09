@@ -30,8 +30,8 @@
 (defn authorization-request [{:keys [exchange-id seller-id msg-token fpx-version pki endpoints]}]
   (let [msg-type "AR"
         timestamp (utils/timestamp-id)
-        form-params {:fpx_msgType "AR"
-                     :fpx_msgToken "01"
+        form-params {:fpx_msgType msg-type
+                     :fpx_msgToken msg-token
                      :fpx_sellerExId exchange-id
                      :fpx_sellerExOrderNo timestamp
                      :fpx_sellerTxnTime timestamp
