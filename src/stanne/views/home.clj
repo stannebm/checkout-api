@@ -17,7 +17,7 @@
       [:h2.text-3xl.py-3.mb-12 {:style {:font-family "Roboto"}}
        "Online Banking (Transfer)"]
 
-      [:div.my-3.mb-8.p-3.bg-gray-200.text-gray-600.text-md
+      [:div.my-3.mb-8.p-3.bg-gray-200.text-gray-600.text-md.font-bold
        [:p "Order Reference: " (form-params :fpx_sellerOrderNo)]
        [:p "Total: RM" (form-params :fpx_txnAmount)]]
 

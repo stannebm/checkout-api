@@ -8,7 +8,7 @@
             :href "https://fonts.gstatic.com"}]
     [:link {:href "https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap",
             :rel "stylesheet"}]
-    [:link {:href "https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&display=swap",
+    [:link {:href "https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400&display=swap",
             :rel "stylesheet"}]
     [:link {:href "/tailwind.css",
             :rel "stylesheet"}]]
