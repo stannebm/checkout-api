@@ -5,6 +5,9 @@
    [stanne.fpx.common :as common]
    [stanne.fpx.utils :as utils]))
 
+(def ^:private bank-status {"A" :available
+                            "B" :blocked})
+
 (defn- bank-list-request [{:keys [exchange-id msg-token fpx-version pki endpoints]}]
   (let [msg-type "BE"
         url (:bank-list endpoints)
@@ -32,23 +35,24 @@
                              (str/join "|"))
         signature (:fpx_checkSum info)
         public-key (-> config :pki :fpx-cert)
-        checksum-ok? (utils/verify response-params signature {:public-key public-key})]
+        checksum-ok? (utils/verify response-params signature {:public-key public-key})
+        process (comp (fn [[a b]]
+                        [a {:code a
+                            :name (banks a)
+                            :status (bank-status b)}])
+                      #(str/split % #"~"))
+        all-banks (-> info
+                      :fpx_bankList
+                      (str/split #",")
+                      ((partial map process)))]
     (when-not checksum-ok?
       (throw (ex-info "Invalid checksum"
                       {:api "BE"
                        :response-params response-params
                        :signature signature
                        :public-key public-key})))
-    (let [process (comp (fn [[a b]]
-                          [a {:code a
-                              :name (banks a)
-                              :status b}])
-                        #(str/split % #"~"))]
-      (-> info
-          :fpx_bankList
-          (str/split #",")
-          ((partial map process))
-          ((partial into {}))))))
+    (into {} (filter (fn [[_ v]] (= :available (:status v)))
+                     all-banks))))
 
 (comment
   ;; bank list
