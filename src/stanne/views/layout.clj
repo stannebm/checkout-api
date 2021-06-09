@@ -17,4 +17,8 @@
      [:div.w-full.m-0.m-auto.min-h-screen.py-10.px-3 {:style "max-width: 620px"}
       [:div.my-10.rounded-xl {:style {:background "#f9f9f9"
                                       :font-family "Montserrat"}}
-       body]]]]))
+       body]]
+
+     [:div.w-full.bottom-0.absolute {:style {:font-family "Montserrat"}}
+      [:div.text-white.text-sm.p-3.flex.justify-center
+       [:p "&copy; Copyright 2020-2021 minorbasilicastannebm.com. All Rights Reserved."]]]]]))
