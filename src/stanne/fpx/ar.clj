@@ -27,7 +27,9 @@
    :fpx_txnCurrency
    :fpx_version])
 
-(defn authorization-request [{:keys [exchange-id seller-id msg-token fpx-version pki endpoints]}]
+(defn authorization-request
+  "For UAT testing, use buyerBankId=TEST0021 and username/password = 1234/1234"
+  [{:keys [exchange-id seller-id msg-token fpx-version pki endpoints]}]
   (let [msg-type "AR"
         timestamp (utils/timestamp-id)
         form-params {:fpx_msgType msg-type
