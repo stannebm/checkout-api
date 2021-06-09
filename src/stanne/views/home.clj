@@ -14,23 +14,23 @@
                         (dissoc :fpx_buyerBankId))]
     (layout
      [:div.p-5.text-lg
-      [:h2.text-4xl.mb-10 {:font-family "Roboto"}
-       "Online Banking"]
+      [:h2.text-3xl.py-3.mb-12 {:style {:font-family "Roboto"}}
+       "Online Banking (Transfer)"]
 
-      [:div.my-3.mb-5.p-3.bg-gray-200
-       [:p "Total: RM" (form-params :fpx_txnAmount)]
-       [:p "Order Reference: " (form-params :fpx_sellerOrderNo)]]
+      [:div.my-3.mb-8.p-3.bg-gray-200.text-gray-600.text-md
+       [:p "Order Reference: " (form-params :fpx_sellerOrderNo)]
+       [:p "Total: RM" (form-params :fpx_txnAmount)]]
 
-      [:form {:method "post"
-              :action url}
+      [:form.m-0 {:method "post"
+                  :action url}
 
-       [:div {:class "mb-10"}
+       [:div {:class "mb-5"}
         [:label {:for "fpx_buyerBankId",
-                 :class "block text-sm font-medium text-gray-700"}
+                 :class "block text-md font-medium text-gray-700"}
          "Choose Bank"]
         [:select {:id "fpx_buyerBankId",
                   :name "fpx_buyerBankId",
-                  :class "mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"}
+                  :class "mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"}
 
          (for [{:keys [name code]} (vals banks)]
            [:option {:value code} name])]]
@@ -40,7 +40,14 @@
                   :value value
                   :name field}])
 
-       [:div
-        [:button {:type "submit",
-                  :class "inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"}
-         "Continue"]]]])))
+       [:p {:class "text-sm text-gray-500 px-3 py-5"}
+        "By clicking on the “Proceed” button, you hereby agree with "
+        [:br]
+        [:a {:class "text-gray-500 underline font-bold"
+             :href (-> config :endpoints :tnc)
+             :target "_blank"}
+         "FPX’s Terms & Conditions"]]
+
+       [:button {:type "submit",
+                 :class "inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"}
+        "Continue"]]])))
