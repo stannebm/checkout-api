@@ -1,16 +1,23 @@
 (ns stanne.views.home
   (:require
    [stanne.views.layout :refer [layout]]
-   [stanne.fpx.ar :as ar]))
+   [stanne.fpx.ar :as ar]
+   [stanne.fpx.be :as be]
+   [stanne.fpx.common :as common]))
 
 (defn home-view [config]
-  (let [ar (ar/authorization-request config)
+  (let [banks (be/bank-list config (common/bank-mapping (:env config)))
+        ar (ar/authorization-request config)
         url (:url ar)
         form-params (:form-params ar)]
     (layout
      [:div
       [:h2 "in home view"]
       [:div (str config)]
+
+      [:div
+       (for [{:keys [name status]} (vals banks)]
+         [:p name "--" status])]
 
       [:form {:method "post"
               :action url}
