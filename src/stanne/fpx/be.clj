@@ -39,9 +39,10 @@
                        :response-params response-params
                        :signature signature
                        :public-key public-key})))
-    (let [process (comp (fn [[a b]] [a {:code a
-                                        :name (banks a)
-                                        :status b}])
+    (let [process (comp (fn [[a b]]
+                          [a {:code a
+                              :name (banks a)
+                              :status b}])
                         #(str/split % #"~"))]
       (-> info
           :fpx_bankList
