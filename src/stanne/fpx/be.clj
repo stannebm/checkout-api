@@ -51,8 +51,8 @@
                        :response-params response-params
                        :signature signature
                        :public-key public-key})))
-    (into {} (filter (fn [[_ v]] (= :available (:status v)))
-                     all-banks))))
+    (into (sorted-map) (filter (fn [[_ v]] (= :available (:status v)))
+                               all-banks))))
 
 (comment
   ;; bank list

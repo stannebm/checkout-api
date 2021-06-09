@@ -44,7 +44,7 @@
                      :fpx_txnAmount "1.00"
                      :fpx_buyerEmail ""
                      :fpx_buyerName ""
-                     :fpx_buyerBankId "TEST0021"
+                     :fpx_buyerBankId "TEST0021" ;; should be dissoc-ed in dynamic page
                      :fpx_buyerBankBranch ""
                      :fpx_buyerAccNo ""
                      :fpx_buyerId ""

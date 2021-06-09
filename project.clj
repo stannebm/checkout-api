@@ -8,7 +8,7 @@
                  [org.slf4j/jcl-over-slf4j "1.7.26"]
                  [org.slf4j/log4j-over-slf4j "1.7.26"]
                  [integrant "0.8.0"]
-                 [hiccup "1.0.5"]
+                 [hiccup/hiccup "2.0.0-alpha2"]
                  [http-kit "2.5.3"]
                  ;; [org.bouncycastle/bcprov-jdk15 "1.46"]
                  ;; [commons-io/commons-io "2.4"]
