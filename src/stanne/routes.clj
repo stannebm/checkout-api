@@ -1,12 +1,12 @@
 (ns stanne.routes
   (:require
-   [stanne.views.home :refer [home-view]]
    [integrant.core :as ig]
    [io.pedestal.http :as http]
    [io.pedestal.http.route :as route]
+   [io.pedestal.interceptor :refer [interceptor]]
    [ring.util.response :as r]
    [stanne.fpx :as fpx]
-   [io.pedestal.interceptor :refer [interceptor]]))
+   [stanne.views.home :refer [home-view]]))
 
 (defn about
   [_]

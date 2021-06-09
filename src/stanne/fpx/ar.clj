@@ -42,13 +42,13 @@
                      :fpx_txnAmount "1.00"
                      :fpx_buyerEmail ""
                      :fpx_buyerName ""
-                     :fpx_buyerBankId ""
+                     :fpx_buyerBankId "TEST0021"
                      :fpx_buyerBankBranch ""
                      :fpx_buyerAccNo ""
                      :fpx_buyerId ""
                      :fpx_makerName ""
                      :fpx_buyerIban ""
-                     :fpx_productDesc "product description"
+                     :fpx_productDesc timestamp
                      :fpx_version fpx-version}
         validation (str/join "|" ((apply juxt checksum-fields) form-params))
         checksum (-> validation
