@@ -27,7 +27,7 @@
    :fpx_txnCurrency
    :fpx_version])
 
-(defn- authorization-request [{:keys [exchange-id seller-id msg-token fpx-version pki endpoints]}]
+(defn authorization-request [{:keys [exchange-id seller-id msg-token fpx-version pki endpoints]}]
   (let [msg-type "AR"
         timestamp (utils/timestamp-id)
         form-params {:fpx_msgType "AR"

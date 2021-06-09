@@ -1,10 +1,11 @@
 (ns stanne.routes
   (:require
-   [stanne.views.layout :refer [main-layout]]
+   [stanne.views.home :refer [home-view]]
    [integrant.core :as ig]
    [io.pedestal.http :as http]
    [io.pedestal.http.route :as route]
    [ring.util.response :as r]
+   [stanne.fpx :as fpx]
    [io.pedestal.interceptor :refer [interceptor]]))
 
 (defn about
@@ -14,8 +15,7 @@
                       (route/url-for ::about))))
 (defn home
   [request]
-  (r/response (main-layout (str
-                            (:app-env request)))))
+  (r/response (home-view (fpx/config (:app-env request)))))
 
 (defmethod ig/init-key ::main
   [_ _]
