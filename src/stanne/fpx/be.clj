@@ -2,7 +2,7 @@
   (:require
    [clojure.string :as str]
    [org.httpkit.client :as http]
-   [stanne.fpx.common :as common]
+   [stanne.fpx.common :as fpx]
    [stanne.fpx.utils :as utils]))
 
 (def ^:private bank-status {"A" :available
@@ -56,5 +56,5 @@
 
 (comment
   ;; bank list
-  (bank-list (common/config :dev)
-             (common/bank-mapping :dev)))
+  (bank-list (fpx/config :dev)
+             (fpx/bank-mapping :dev)))

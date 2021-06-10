@@ -5,7 +5,7 @@
    [io.pedestal.http.route :as route]
    [io.pedestal.interceptor :refer [interceptor]]
    [ring.util.response :as r]
-   [stanne.fpx :as fpx]
+   [stanne.fpx.common :as fpx]
    [stanne.views.home :refer [home-view]]))
 
 (defn about

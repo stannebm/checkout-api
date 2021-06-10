@@ -3,10 +3,10 @@
    [stanne.views.layout :refer [layout]]
    [stanne.fpx.ar :as ar]
    [stanne.fpx.be :as be]
-   [stanne.fpx.common :as common]))
+   [stanne.fpx.common :as fpx]))
 
 (defn home-view [config]
-  (let [banks (be/bank-list config (common/bank-mapping (:env config)))
+  (let [banks (be/bank-list config (fpx/bank-mapping (:env config)))
         ar (ar/authorization-request config)
         url (:url ar)
         form-params (-> ar
