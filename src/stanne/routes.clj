@@ -3,6 +3,7 @@
    [integrant.core :as ig]
    [io.pedestal.http :as http]
    [io.pedestal.interceptor :refer [interceptor]]
+   [io.pedestal.http.body-params :refer [form-parser]] ;; decode form/json
    [ring.util.response :as r]
    [stanne.fpx.common :as fpx]
    [stanne.views.home :refer [home-view]]))
@@ -22,15 +23,19 @@
 
 (defn fpx-callback-indirect
   "FPX indirect AC callback (HTML)"
-  [{:keys [query-params fpx-data]}]
-  (prn query-params)
-  (r/response query-params))
+  [{:keys [fpx-data]
+    :as request}]
+  (let [form-params (-> request form-parser :form-params)]
+    (prn "fpx-data:" fpx-data)
+    (prn "form-params:" form-params)
+    (prn "request:" (keys request))
+    (r/response form-params)))
 
 (defmethod ig/init-key ::main
   [_ _]
   (prn "init routes..")
   #{["/" :get [http/html-body `confirm-transfer]]
-    ["/indirect" :get [http/json-body `fpx-callback-indirect]]
+    ["/indirect" :post [http/json-body `fpx-callback-indirect]]
     ["/test" :get `test-controller]})
 
 (defn fpx-data-interceptor [env]
