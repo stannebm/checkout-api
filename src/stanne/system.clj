@@ -18,4 +18,5 @@
    ::server/server {:config (ig/ref ::server/config)}})
 
 (defn -main []
-  (ig/init (config :prod)))
+  ;; FIXME change to :prod after UAT
+  (ig/init (config :dev)))

@@ -1,0 +1,15 @@
+[Unit]
+Description=FPX api
+After=network.target network-online.target
+Requires=network-online.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStart=/usr/bin/java -jar /root/fpx-api.jar
+Restart=on-failure
+LimitNOFILE=1048576
+
+[Install]
+WantedBy=multi-user.target
