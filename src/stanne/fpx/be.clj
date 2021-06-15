@@ -46,11 +46,12 @@
                       (str/split #",")
                       ((partial map process)))]
     (when-not checksum-ok?
-      (throw (ex-info "Invalid checksum"
-                      {:api "BE"
+      (throw (ex-info "Invalid BE checksum"
+                      {:api :BE
                        :response-params response-params
                        :signature signature
-                       :public-key public-key})))
+                       :public-key public-key}
+                      :checksum-error)))
     (into (sorted-map) (filter (fn [[_ v]] (= :available (:status v)))
                                all-banks))))
 
