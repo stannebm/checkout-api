@@ -22,7 +22,7 @@
     {:url url
      :form-params form-params}))
 
-(defn bank-list [config banks]
+(defn bank-list [config bank-mapping]
   (let [{:keys [url form-params]} (bank-list-request config)
         resp @(http/post url {:form-params form-params
                               :as :text})
@@ -38,7 +38,7 @@
         checksum-ok? (utils/verify response-params signature {:public-key public-key})
         process (comp (fn [[a b]]
                         [a {:code a
-                            :name (banks a)
+                            :name (bank-mapping a)
                             :status (bank-status b)}])
                       #(str/split % #"~"))
         all-banks (-> info

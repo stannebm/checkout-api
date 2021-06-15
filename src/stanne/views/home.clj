@@ -2,11 +2,10 @@
   (:require
    [stanne.views.layout :refer [layout]]
    [stanne.fpx.ar :as ar]
-   [stanne.fpx.be :as be]
-   [stanne.fpx.common :as fpx]))
+   [stanne.fpx.be :as be]))
 
-(defn home-view [config]
-  (let [banks (be/bank-list config (fpx/bank-mapping (:env config)))
+(defn home-view [{:keys [config bank-mapping]}]
+  (let [banks (be/bank-list config bank-mapping)
         ar (ar/authorization-request config)
         url (:url ar)
         form-params (-> ar
@@ -17,7 +16,7 @@
       [:h2.text-3xl.py-3.mb-12 {:style {:font-family "Roboto"}}
        "Online Banking (Transfer)"]
 
-      [:div.my-3.mb-8.p-3.bg-gray-200.text-gray-600.text-md.font-bold
+      [:div.my-3.mb-8.p-3.bg-gray-200.text-gray-600.text-md
        [:p "Order Reference: " (form-params :fpx_sellerOrderNo)]
        [:p "Total: RM" (form-params :fpx_txnAmount)]]
 
