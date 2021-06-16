@@ -1,7 +1,7 @@
 (ns stanne.fpx.be
   (:require
    [clojure.string :as str]
-   [org.httpkit.client :as http]
+   [clj-http.client :as client]
    [stanne.fpx.common :as fpx]
    [stanne.fpx.utils :as utils]))
 
@@ -24,8 +24,7 @@
 
 (defn bank-list [config bank-mapping]
   (let [{:keys [url form-params]} (bank-list-request config)
-        resp @(http/post url {:form-params form-params
-                              :as :text})
+        resp (client/post url {:form-params form-params})
         info (-> resp :body utils/parse-nvp)
         response-params (->> info
                              ((apply juxt [:fpx_bankList

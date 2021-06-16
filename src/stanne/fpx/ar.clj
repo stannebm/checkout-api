@@ -1,7 +1,7 @@
 (ns stanne.fpx.ar
   (:require
    [clojure.string :as str]
-   [org.httpkit.client :as http]
+   [clj-http.client :as client]
    [stanne.fpx.common :as fpx]
    [stanne.fpx.utils :as utils]))
 
@@ -61,7 +61,5 @@
 
 (comment
   (let [{:keys [url form-params]} (authorization-request (fpx/config :dev))
-        resp @(http/post url {:form-params form-params
-                              :as :text})]
+        resp (client/post url {:form-params form-params})]
     resp))
-

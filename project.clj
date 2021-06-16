@@ -9,7 +9,8 @@
                  [org.slf4j/log4j-over-slf4j "1.7.26"]
                  [integrant "0.8.0"]
                  [hiccup/hiccup "2.0.0-alpha2"]
-                 [http-kit "2.5.3"]
+                 [clj-http "3.12.0"]
+
                  ;; [org.bouncycastle/bcprov-jdk15 "1.46"]
                  ;; [commons-io/commons-io "2.4"]
                  [buddy/buddy-core "1.10.1"]]
