@@ -1,6 +1,10 @@
-# stanne
+# StAnne FPX API
 
-FIXME
+This project integrates FPX API according to the [official documentation](https://fpxexchange.myclear.org.my:8443/MerchantIntegrationKit/)
+
+FPX is a payment gateway that provides online banking services to internet businesses.
+
+https://paynet.my/personal-fpx.html
 
 ## Getting Started
 
