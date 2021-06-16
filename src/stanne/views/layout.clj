@@ -20,6 +20,9 @@
                                       :font-weight "300"}}
        body]]
 
-     [:div.w-full.bottom-0.absolute {:style {:font-family "Montserrat"}}
-      [:div.text-white.text-sm.p-3.flex.justify-center
+     [:div.w-full.bottom-0.absolute {:style {:font-family "Montserrat"
+                                             :font-weight 300
+                                             :font-size "14px"
+                                             :color "#EDF2F7"}}
+      [:div.flex.justify-center {:style {:padding "20px"}}
        [:p "&copy; Copyright 2020-2021 minorbasilicastannebm.com. All Rights Reserved."]]]]]))
