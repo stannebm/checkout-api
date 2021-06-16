@@ -32,4 +32,9 @@ To learn more about configuring Logback, read its [documentation](http://logback
 ## Requirements
 
 FPX certificate and merchant exchange key must be available at path `/etc/fpx`.
+
 FPX is configured [here](/src/stanne/fpx/core.clj)
+
+## UAT test
+
+In UAT test, only "SBI Bank A" is supported, and the username/password is 1234/1234
