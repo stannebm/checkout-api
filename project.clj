@@ -19,6 +19,7 @@
   :profiles {:dev {:source-paths ["dev/src"]
                    :dependencies [[integrant/repl "0.3.2"]
                                   [io.pedestal/pedestal.service-tools "0.5.9"]]}
-             :repl {:repl-options {:init-ns dev}}
+             :repl {:repl-options {:init-ns dev}
+                    :plugins [[cider/cider-nrepl "0.26.0"]]}
              :uberjar {:aot [stanne.system]}}
   :main ^{:skip-aot true} stanne.system)
