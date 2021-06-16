@@ -11,35 +11,25 @@ FIXME
 4. Run your app's tests with `lein test`. Read the tests at test/fpx_app/service_test.clj.
 5. Learn more! See the [Links section below](#links).
 
-
 ## Configuration
 
 To configure logging see config/logback.xml. By default, the app logs to stdout and logs/.
 To learn more about configuring Logback, read its [documentation](http://logback.qos.ch/documentation.html).
 
+## Stacks
 
-## Developing your service
+- JDK: Amazon Corretto-11.0.11.9.1
+- Web framework: Pedestal
+- Web server: Jetty
+- Workflow/microframeworks: Integrant & Integrant REPL
+- Encryption Provider: BouncyCastle
+- Templating language: Hiccup
 
-1. Start a new REPL: `lein repl`
-2. Start your service in dev-mode: `(def dev-serv (run-dev))`
-3. Connect your editor to the running REPL session.
-   Re-evaluated code will be seen immediately in the service.
+## Dev Workflow
 
-### [Docker](https://www.docker.com/) container support
-
-1. Configure your service to accept incoming connections (edit service.clj and add  ::http/host "0.0.0.0" )
-2. Build an uberjar of your service: `lein uberjar`
-3. Build a Docker image: `sudo docker build -t stanne .`
-4. Run your Docker image: `docker run -p 8080:8080 stanne`
-
-### [OSv](http://osv.io/) unikernel support with [Capstan](http://osv.io/capstan/)
-
-1. Build and run your image: `capstan run -f "8080:8080"`
-
-Once the image it built, it's cached.  To delete the image and build a new one:
-
-1. `capstan rmi stanne; capstan build`
-
-
-## Links
-* [Other Pedestal examples](http://pedestal.io/samples)
+1. run `lein repl`
+2. execute `(go)`
+3. Visit `localhost:8080`
+4. In emacs, run `M-x: cider-connect-clj`
+5. After changing a file, run `M-x: cider-ns-refresh`
+6. Refresh `localhost:8080`
