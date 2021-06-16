@@ -2,7 +2,7 @@
   (:require
    [clojure.string :as str]
    [clj-http.client :as client]
-   [stanne.fpx.common :as fpx]
+   [stanne.fpx.core :as fpx]
    [stanne.fpx.utils :as utils]))
 
 (def ^:private bank-status {"A" :available
@@ -49,8 +49,7 @@
                       {:api :BE
                        :response-params response-params
                        :signature signature
-                       :public-key public-key}
-                      :checksum-error)))
+                       :public-key public-key})))
     (into (sorted-map) (filter (fn [[_ v]] (= :available (:status v)))
                                all-banks))))
 

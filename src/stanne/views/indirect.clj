@@ -2,36 +2,41 @@
   (:require
    [stanne.views.layout :refer [layout]]))
 
-(defn indirect-view []
+(defn- to-table [{:keys [bank fpx_fpxTxnId fpx_txnAmount fpx_txnCurrency]}]
+  {"Recipient" "Minor Basilica St. Anne BM"
+   "Bank" bank
+   "Order Reference" fpx_fpxTxnId
+   "FPX Transaction ID" fpx_fpxTxnId
+   "Amount" (str fpx_txnCurrency fpx_txnAmount)})
+
+(defn indirect-view [{:keys [status relevant-info]}]
   (layout
    [:div.p-5.text-lg
 
     [:img {:class "w-36"
            :src "/fpx-logo.png"}]
 
-    [:h2.text-3xl.py-3.mb-6.text-green-500 {:style {:font-family "Lato"}}
-     "Payment Successful"]
+    (case status
+      :ok
+      [:h2.text-3xl.py-3.mb-6.text-green-500 {:style {:font-family "Lato"}}
+       "Payment Successful"]
+
+      :pending-authorization
+      [:h2.text-3xl.py-3.mb-6.text-green-500 {:style {:font-family "Lato"}}
+       "Payment Authorized"]
+
+      :failed
+      [:h2.text-3xl.py-3.mb-6.text-red-500 {:style {:font-family "Lato"}}
+       "Payment Failed"])
 
     [:div.my-3.mb-8.p-3.bg-gray-200.text-gray-600.text-md
      [:div
-
-      [:div.flex
-       [:div {:class "w-5/12 text-gray-400 font-medium"} "label"]
-       [:div.flex-1 "value"]]]
-
-     [:div.grid.grid-cols-2.gap-2
-      [:span "Recipient:"]
-      [:span "Minor Basilica St. Anne BM"]
-      [:span "Order Reference:"]
-      [:span "asdasdad"]
-      [:span "Bank:"]
-      [:span "PBB"]
-      [:span "Reference ID:"]
-      [:span "202020202"]
-      [:span "FPX Transaction ID:"]
-      [:span "202020202"]
-      [:span "Amount:"]
-      [:span "RM" 20]]]
+      (for [[label value] (to-table relevant-info)]
+        [:div.flex.mb-2
+         [:div {:class "w-5/12 text-gray-400"}
+          label]
+         [:div.flex-1
+          value]])]]
 
     [:button {:onclick "window.print()"
               :type "btn"

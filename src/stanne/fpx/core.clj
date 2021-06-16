@@ -1,4 +1,4 @@
-(ns stanne.fpx.common
+(ns stanne.fpx.core
   (:require [clojure.walk :as walk]))
 
 (defn config [env]

@@ -9,7 +9,7 @@
   {:env env
    ::pedestal/routes #(route/expand-routes routes)
    ::pedestal/host "localhost"
-   ::pedestal/port 8100
+   ::pedestal/port 8080
    ::pedestal/resource-path "/public"
    ::pedestal/type :jetty
    ::pedestal/container-options {;; Options to pass to the container (Jetty)

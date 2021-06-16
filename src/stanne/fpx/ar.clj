@@ -2,7 +2,7 @@
   (:require
    [clojure.string :as str]
    [clj-http.client :as client]
-   [stanne.fpx.common :as fpx]
+   [stanne.fpx.core :as fpx]
    [stanne.fpx.utils :as utils]))
 
 (def ^:private checksum-fields
