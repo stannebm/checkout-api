@@ -1,51 +1,88 @@
 (ns stanne.routes
   (:require
+   [clojure.core.match :as core.match]
    [integrant.core :as ig]
    [io.pedestal.http :as http]
+   [io.pedestal.http.body-params :refer [form-parser]]
    [io.pedestal.interceptor :refer [interceptor]]
-   [io.pedestal.http.body-params :refer [form-parser]] ;; decode form/json
+   [io.pedestal.log :as log]
    [ring.util.response :as r]
-   [stanne.fpx.common :as fpx]
-   [stanne.views.home :refer [home-view]]))
-
-(defn test-controller
-  [{:keys [query-params fpx-data]}]
-  (r/response (case (fpx-data :env)
-                :dev (str "query-params" query-params
-                          "\n\n"
-                          "fpx-data" fpx-data)
-                "forbidden")))
+   [stanne.fpx.ac :refer [authorization-confirmation]]
+   [stanne.fpx.core :as fpx]
+   [stanne.views.home :refer [home-view]]
+   [stanne.views.indirect :refer [indirect-view]]))
 
 (defn confirm-transfer
   "Post to FPX's AR endpoint"
   [{:keys [fpx-data]}]
   (r/response (home-view fpx-data)))
 
+(defn fpx-callback-direct
+  "FPX direct AC callback (text)"
+  [{:keys [fpx-data]
+    :as request}]
+  (let [form-params #_(ac-stub) (-> request form-parser :form-params)
+        ac (authorization-confirmation form-params fpx-data)
+        status (:status ac)]
+    (r/response (cond
+                  (contains? #{:ok :pending-authorization} status) "OK"
+                  :else "FAILED"))))
+
 (defn fpx-callback-indirect
   "FPX indirect AC callback (HTML)"
   [{:keys [fpx-data]
     :as request}]
-  (let [form-params (-> request form-parser :form-params)]
-    (prn "fpx-data:" fpx-data)
-    (prn "form-params:" form-params)
-    (prn "request:" (keys request))
-    (r/response form-params)))
+  (let [form-params #_(ac-stub) (-> request form-parser :form-params)
+        ac (authorization-confirmation form-params fpx-data)]
+    (r/response (indirect-view ac))))
+
+;;; Routes ;;;
 
 (defmethod ig/init-key ::main
   [_ _]
-  (prn "init routes..")
+  (log/debug :event "init routes")
   #{["/" :get [http/html-body `confirm-transfer]]
-    ["/indirect" :post [http/json-body `fpx-callback-indirect]]
-    ["/test" :get `test-controller]})
+    ["/direct" :post `fpx-callback-direct]
+    ["/indirect" :post [http/html-body `fpx-callback-indirect]]})
+
+;;; Interceptors ;;;
+
+(defn service-error-handler []
+  (interceptor
+   {:error
+    (fn [ctx ex]
+      ;; ex-data keys:
+      ;;  :execution-id
+      ;;  :stage
+      ;;  :interceptor
+      ;;  :exception-type
+      ;;  :exception
+      (let [ex-data' (ex-data ex)
+            cause (-> ex Throwable->map :cause)
+            whitelist [:api :response-params :signature]]
+        (core.match/match [ex-data']
+          ;; in the application space, we always throw ex-info
+          [{:exception-type :clojure.lang.ExceptionInfo}]
+          (do
+            (log/error :error (-> {:cause cause}
+                                  (merge (select-keys ex-data' whitelist))
+                                  str))
+            (assoc ctx :response {:status 500
+                                  :body cause}))
+          ;; unexpected exception, rethrow
+          :else
+          (assoc ctx :io.pedestal.interceptor.chain/error ex))))}))
 
 (defn fpx-data-interceptor [env]
   (interceptor
    {:name ::fpx-data
     :enter (fn [ctx]
-             (update ctx :request assoc :fpx-data {:env env
-                                                   :config (fpx/config env)
-                                                   :bank-mapping (fpx/bank-mapping env)}))}))
+             (update ctx :request
+                     assoc :fpx-data {:env env
+                                      :config (fpx/config env)
+                                      :bank-mapping (fpx/bank-mapping env)}))}))
 
 (defmethod ig/init-key ::interceptors
   [_ env]
-  [(fpx-data-interceptor (:env env))])
+  [(service-error-handler)
+   (fpx-data-interceptor (:env env))])

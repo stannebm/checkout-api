@@ -1,30 +1,60 @@
-(ns stanne.fpx.ac)
+(ns stanne.fpx.ac
+  (:require [clojure.string :as str]
+            [stanne.fpx.utils :as utils]))
 
- ;;    fpx_buyerBankBranch= request.getParameter("fpx_buyerBankBranch");
- ;;    fpx_buyerBankId= request.getParameter("fpx_buyerBankId");
- ;;    fpx_buyerIban= request.getParameter("fpx_buyerIban");
- ;;    fpx_buyerId= request.getParameter("fpx_buyerId");
- ;;    fpx_buyerName= request.getParameter("fpx_buyerName");
- ;;    fpx_creditAuthCode= request.getParameter("fpx_creditAuthCode");
- ;;    fpx_creditAuthNo= request.getParameter("fpx_creditAuthNo");
- ;;    fpx_debitAuthCode= request.getParameter("fpx_debitAuthCode");
- ;;    fpx_debitAuthNo= request.getParameter("fpx_debitAuthNo");
- ;;    fpx_fpxTxnId= request.getParameter("fpx_fpxTxnId");
- ;;    fpx_fpxTxnTime= request.getParameter("fpx_fpxTxnTime");
- ;;    fpx_makerName= request.getParameter("fpx_makerName");
- ;;    fpx_msgToken= request.getParameter("fpx_msgToken");
- ;;    fpx_msgType= request.getParameter("fpx_msgType");
- ;;    fpx_sellerExId= request.getParameter("fpx_sellerExId");
- ;;    fpx_sellerExOrderNo= request.getParameter("fpx_sellerExOrderNo");
- ;;    fpx_sellerId= request.getParameter("fpx_sellerId");
- ;;    fpx_sellerOrderNo= request.getParameter("fpx_sellerOrderNo");
- ;;    fpx_sellerTxnTime= request.getParameter("fpx_sellerTxnTime");
- ;;    fpx_txnAmount= request.getParameter("fpx_txnAmount");
- ;;    fpx_txnCurrency= request.getParameter("fpx_txnCurrency");
- ;;    fpx_checkSum= request.getParameter("fpx_checkSum");
+;; refer src/stubs.clj
+
+(def ^:private checksum-fields
+  [:fpx_buyerBankBranch
+   :fpx_buyerBankId
+   :fpx_buyerIban
+   :fpx_buyerId
+   :fpx_buyerName
+   :fpx_creditAuthCode
+   :fpx_creditAuthNo
+   :fpx_debitAuthCode
+   :fpx_debitAuthNo
+   :fpx_fpxTxnId
+   :fpx_fpxTxnTime
+   :fpx_makerName
+   :fpx_msgToken
+   :fpx_msgType
+   :fpx_sellerExId
+   :fpx_sellerExOrderNo
+   :fpx_sellerId
+   :fpx_sellerOrderNo
+   :fpx_sellerTxnTime
+   :fpx_txnAmount
+   :fpx_txnCurrency])
 
 (defn authorization-confirmation
   "Callback from FPX"
-  [params fpx-data]
-  ;; (let [{:keys []} params])
-  )
+  [{:keys [fpx_checkSum fpx_debitAuthCode]
+    :as ac-response}
+   {:keys [config bank-mapping]}]
+  (let [msg (str/join "|" ((apply juxt checksum-fields) ac-response))
+        signature fpx_checkSum
+        public-key (-> config :pki :fpx-cert)
+        checksum-ok? (utils/verify msg signature {:public-key public-key})
+        ac-response' (assoc ac-response
+                            :bank (bank-mapping (:fpx_buyerBankId ac-response)))]
+
+    (when-not checksum-ok?
+      (throw (ex-info "Invalid AC checksum"
+                      {:api :AC
+                       :msg msg
+                       :signature signature
+                       :public-key public-key})))
+
+    {:status
+     (case fpx_debitAuthCode
+       "00" :ok
+       "99" :pending-authorization
+       :failed)
+
+     :relevant-info
+     (select-keys ac-response' [:bank
+                                :fpx_fpxTxnId
+                                :fpx_txnAmount
+                                :fpx_txnCurrency
+                                :fpx_debitAuthCode])}))

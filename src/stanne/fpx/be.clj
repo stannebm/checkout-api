@@ -1,8 +1,8 @@
 (ns stanne.fpx.be
   (:require
    [clojure.string :as str]
-   [org.httpkit.client :as http]
-   [stanne.fpx.common :as fpx]
+   [clj-http.client :as client]
+   [stanne.fpx.core :as fpx]
    [stanne.fpx.utils :as utils]))
 
 (def ^:private bank-status {"A" :available
@@ -24,8 +24,7 @@
 
 (defn bank-list [config bank-mapping]
   (let [{:keys [url form-params]} (bank-list-request config)
-        resp @(http/post url {:form-params form-params
-                              :as :text})
+        resp (client/post url {:form-params form-params})
         info (-> resp :body utils/parse-nvp)
         response-params (->> info
                              ((apply juxt [:fpx_bankList
@@ -46,8 +45,8 @@
                       (str/split #",")
                       ((partial map process)))]
     (when-not checksum-ok?
-      (throw (ex-info "Invalid checksum"
-                      {:api "BE"
+      (throw (ex-info "Invalid BE checksum"
+                      {:api :BE
                        :response-params response-params
                        :signature signature
                        :public-key public-key})))

@@ -1,4 +1,4 @@
-build:
+build: clean
 	lein uberjar
 
 release:
@@ -13,3 +13,10 @@ status:
 
 log:
 	ssh arch "journalctl -u fpx-api -f"
+
+# https://stackoverflow.com/questions/44246924/clojure-tools-namespace-refresh-fails-with-no-namespace-foo
+clean:
+	lein clean
+
+repl:
+	lein repl

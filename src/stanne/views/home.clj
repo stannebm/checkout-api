@@ -13,8 +13,12 @@
                         (dissoc :fpx_buyerBankId))]
     (layout
      [:div.p-5.text-lg
-      [:h2.text-3xl.py-3.mb-12 {:style {:font-family "Roboto"}}
-       "Online Banking (Transfer)"]
+
+      [:img {:class "w-36"
+             :src "/fpx-logo.png"}]
+
+      [:h2.text-3xl.py-3.mb-6.text-gray-500 {:style {:font-family "Lato"}}
+       "Online Banking"]
 
       [:div.my-3.mb-8.p-3.bg-gray-200.text-gray-600.text-md
        [:p "Order Reference: " (form-params :fpx_sellerOrderNo)]
@@ -25,7 +29,7 @@
 
        [:div {:class "mb-5"}
         [:label {:for "fpx_buyerBankId",
-                 :class "block text-md font-medium text-gray-700"}
+                 :class "block text-md text-gray-500"}
          "Choose Bank"]
         [:select {:id "fpx_buyerBankId",
                   :name "fpx_buyerBankId",
@@ -39,7 +43,7 @@
                   :value value
                   :name field}])
 
-       [:p {:class "text-sm text-gray-500 px-3 py-5"}
+       [:p {:class "text-sm text-gray-500 px-3 py-5 mt-2"}
         "By clicking on the “Proceed” button, you hereby agree with "
         [:br]
         [:a {:class "text-gray-500 underline font-bold"
@@ -47,6 +51,6 @@
              :target "_blank"}
          "FPX’s Terms & Conditions"]]
 
-       [:button {:type "submit",
-                 :class "inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"}
+       [:button {:type "submit"
+                 :class "inline-flex justify-center mb-2 py-3 px-6 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-green-500 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"}
         "Continue"]]])))

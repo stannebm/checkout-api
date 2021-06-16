@@ -1,8 +1,8 @@
 (ns stanne.fpx.ar
   (:require
    [clojure.string :as str]
-   [org.httpkit.client :as http]
-   [stanne.fpx.common :as fpx]
+   [clj-http.client :as client]
+   [stanne.fpx.core :as fpx]
    [stanne.fpx.utils :as utils]))
 
 (def ^:private checksum-fields
@@ -61,7 +61,5 @@
 
 (comment
   (let [{:keys [url form-params]} (authorization-request (fpx/config :dev))
-        resp @(http/post url {:form-params form-params
-                              :as :text})]
+        resp (client/post url {:form-params form-params})]
     resp))
-

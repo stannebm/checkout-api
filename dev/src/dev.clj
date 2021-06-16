@@ -11,4 +11,3 @@
   (go)
   (reset))
 
-;; (pki.Signature/signData "/etc/fpx/EX00011982.key" "hi" "SHA1withRSA")
