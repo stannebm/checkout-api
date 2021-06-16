@@ -1,7 +1,7 @@
 build: clean
 	lein uberjar
 
-release: build
+release:
 	scp target/stanne-0.0.1-snapshot-standalone.jar	root@arch:/root/fpx-api.jar
 	ssh arch "systemctl restart fpx-api"
 
@@ -18,5 +18,5 @@ log:
 clean:
 	lein clean
 
-repl: clean
+repl:
 	lein repl

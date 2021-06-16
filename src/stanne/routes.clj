@@ -5,13 +5,12 @@
    [io.pedestal.http :as http]
    [io.pedestal.http.body-params :refer [form-parser]]
    [io.pedestal.interceptor :refer [interceptor]]
+   [io.pedestal.log :as log]
    [ring.util.response :as r]
    [stanne.fpx.ac :refer [authorization-confirmation]]
    [stanne.fpx.core :as fpx]
    [stanne.views.home :refer [home-view]]
-   [stanne.views.indirect :refer [indirect-view]]
-   [stubs :refer [ac-callback]]
-   [io.pedestal.log :as log]))
+   [stanne.views.indirect :refer [indirect-view]]))
 
 (defn confirm-transfer
   "Post to FPX's AR endpoint"
@@ -22,16 +21,18 @@
   "FPX direct AC callback (text)"
   [{:keys [fpx-data]
     :as request}]
-  (let [form-params (-> request form-parser :form-params)]
-    (prn "fpx-data:" fpx-data)
-    (prn "form-params:" form-params)
-    (prn "request:" (keys request))
-    (r/response form-params)))
+  (let [form-params #_(ac-stub) (-> request form-parser :form-params)
+        ac (authorization-confirmation form-params fpx-data)
+        status (:status ac)]
+    (r/response (cond
+                  (contains? #{:ok :pending-authorization} status) "OK"
+                  :else "FAILED"))))
 
 (defn fpx-callback-indirect
   "FPX indirect AC callback (HTML)"
-  [{:keys [fpx-data]}]
-  (let [form-params (ac-callback)
+  [{:keys [fpx-data]
+    :as request}]
+  (let [form-params #_(ac-stub) (-> request form-parser :form-params)
         ac (authorization-confirmation form-params fpx-data)]
     (r/response (indirect-view ac))))
 
@@ -41,8 +42,8 @@
   [_ _]
   (log/debug :event "init routes")
   #{["/" :get [http/html-body `confirm-transfer]]
-    ["/direct" :post [http/json-body `fpx-callback-direct]]
-    ["/indirect" :get [http/html-body `fpx-callback-indirect]]})
+    ["/direct" :post `fpx-callback-direct]
+    ["/indirect" :post [http/html-body `fpx-callback-indirect]]})
 
 ;;; Interceptors ;;;
 
