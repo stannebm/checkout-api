@@ -6,7 +6,8 @@
    [io.pedestal.interceptor :refer [interceptor]]
    [ring.util.response :as r]
    [stanne.fpx.common :as fpx]
-   [stanne.views.home :refer [home-view]]))
+   [stanne.views.home :refer [home-view]]
+   [stanne.views.indirect :refer [indirect-view]]))
 
 (defn confirm-transfer
   "Post to FPX's AR endpoint"
@@ -26,7 +27,7 @@
 (defn fpx-callback-indirect
   "FPX indirect AC callback (HTML)"
   [_]
-  (r/response "hihi"))
+  (r/response (indirect-view)))
 
 (defmethod ig/init-key ::main
   [_ _]
