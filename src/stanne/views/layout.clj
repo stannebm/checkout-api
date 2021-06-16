@@ -10,7 +10,7 @@
             :rel "stylesheet"}]
     [:link {:href "https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500&display=swap",
             :rel "stylesheet"}]
-    [:link {:href "/tailwind.css",
+    [:link {:href "https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css",
             :rel "stylesheet"}]]
    [:body
     [:div {:style {:background "linear-gradient(to bottom, #2D3748 0%, #2C7A7B 100%)"}}
