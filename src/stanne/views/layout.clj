@@ -25,4 +25,7 @@
                                              :font-size "14px"
                                              :color "#EDF2F7"}}
       [:div.flex.justify-center {:style {:padding "20px"}}
-       [:p "&copy; Copyright 2020-2021 minorbasilicastannebm.com. All Rights Reserved."]]]]]))
+       [:p "&copy; Copyright 2020-2021 minorbasilicastannebm.com. All Rights Reserved."]]]]
+
+    [:script {:src "https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js"
+              :defer true}]]))
