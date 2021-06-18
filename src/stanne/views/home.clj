@@ -35,7 +35,7 @@
                   :name "fpx_buyerBankId",
                   :class "mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"}
 
-         (for [{:keys [name code]} (vals banks)]
+         (for [{:keys [name code]} (map second banks)]
            [:option {:value code} name])]]
 
        (for [[field value] form-params]

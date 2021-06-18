@@ -35,23 +35,24 @@
         signature (:fpx_checkSum info)
         public-key (-> config :pki :fpx-cert)
         checksum-ok? (utils/verify response-params signature {:public-key public-key})
-        process (comp (fn [[a b]]
-                        [a {:code a
-                            :name (bank-mapping a)
-                            :status (bank-status b)}])
-                      #(str/split % #"~"))
-        all-banks (-> info
-                      :fpx_bankList
-                      (str/split #",")
-                      ((partial map process)))]
+        split-by (fn [re] (fn [s] (str/split s re)))
+        as-tuple (fn [[a b]]
+                   [a {:code a
+                       :name (bank-mapping a)
+                       :status (bank-status b)}])
+        all-banks (->> info
+                       :fpx_bankList
+                       ((split-by #","))
+                       (map (comp as-tuple (split-by #"~")))
+                       (sort-by (comp :name second))
+                       (filter (fn [[_ v]] (= :available (:status v)))))]
     (when-not checksum-ok?
       (throw (ex-info "Invalid BE checksum"
                       {:api :BE
                        :response-params response-params
                        :signature signature
                        :public-key public-key})))
-    (into (sorted-map) (filter (fn [[_ v]] (= :available (:status v)))
-                               all-banks))))
+    all-banks))
 
 (comment
   ;; bank list
