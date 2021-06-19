@@ -23,10 +23,13 @@
     :as request}]
   (let [form-params #_(stubs/ac-stub) (-> request form-parser :form-params)
         ac (authorization-confirmation form-params fpx-data)
-        status (:status ac)]
-    (r/response (cond
-                  (contains? #{:ok :pending-authorization} status) "OK"
-                  :else "FAILED"))))
+        msg (cond
+              (contains? #{:ok :pending-authorization} (:status ac)) "OK"
+              :else "FAILED")]
+    (log/debug :event :callback-direct
+               :form-params form-params
+               :message (str "DIRECT MESSAGE: " msg))
+    (r/response msg)))
 
 (defn fpx-callback-indirect
   "FPX indirect AC callback (HTML)"
