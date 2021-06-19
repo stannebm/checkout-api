@@ -45,8 +45,8 @@
   [_ _]
   (log/debug :event "init routes")
   #{["/" :get [http/html-body `confirm-transfer]]
-    ["/direct" :post `fpx-callback-direct]
-    ["/indirect" :post [http/html-body `fpx-callback-indirect]]})
+    ["/direct" :any `fpx-callback-direct]
+    ["/indirect" :any [http/html-body `fpx-callback-indirect]]})
 
 ;;; Interceptors ;;;
 

@@ -14,6 +14,10 @@ status:
 log:
 	ssh arch "journalctl -u fpx-api -f"
 
+pull-production-logs:
+	rm -f logs/prod/*
+	scp -r root@arch:/logs/* logs/prod/
+
 # https://stackoverflow.com/questions/44246924/clojure-tools-namespace-refresh-fails-with-no-namespace-foo
 clean:
 	lein clean
