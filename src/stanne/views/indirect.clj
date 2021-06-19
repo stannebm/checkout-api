@@ -3,17 +3,18 @@
    [stanne.views.layout :refer [layout]]))
 
 (defn- parse-dt [s]
-  (str (subs s 0 4)
-       "-"
-       (subs s 4 6)
-       "-"
-       (subs s 6 8)
-       " "
-       (subs s 8 10)
-       ":"
-       (subs s 10 12)
-       ":"
-       (subs s 12 14)))
+  (if (empty? s) ""
+      (str (subs s 0 4)
+           "-"
+           (subs s 4 6)
+           "-"
+           (subs s 6 8)
+           " "
+           (subs s 8 10)
+           ":"
+           (subs s 10 12)
+           ":"
+           (subs s 12 14))))
 
 (defn- to-table [{:keys [bank fpx_fpxTxnId fpx_fpxTxnTime fpx_sellerOrderNo fpx_txnAmount fpx_txnCurrency]}]
   {"Recipient" "Minor Basilica St. Anne BM"
