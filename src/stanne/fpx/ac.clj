@@ -55,6 +55,8 @@
      :relevant-info
      (select-keys ac-response' [:bank
                                 :fpx_fpxTxnId
+                                :fpx_fpxTxnTime
+                                :fpx_sellerOrderNo
                                 :fpx_txnAmount
                                 :fpx_txnCurrency
                                 :fpx_debitAuthCode])}))

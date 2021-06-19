@@ -10,7 +10,8 @@
    [stanne.fpx.ac :refer [authorization-confirmation]]
    [stanne.fpx.core :as fpx]
    [stanne.views.home :refer [home-view]]
-   [stanne.views.indirect :refer [indirect-view]]))
+   [stanne.views.indirect :refer [indirect-view]]
+   [stubs :as stubs]))
 
 (defn confirm-transfer
   "Post to FPX's AR endpoint"
@@ -32,7 +33,7 @@
   "FPX indirect AC callback (HTML)"
   [{:keys [fpx-data]
     :as request}]
-  (let [form-params #_(ac-stub) (-> request form-parser :form-params)
+  (let [form-params (stubs/ac-stub) #_(-> request form-parser :form-params)
         ac (authorization-confirmation form-params fpx-data)]
     (r/response (indirect-view ac))))
 
@@ -43,7 +44,7 @@
   (log/debug :event "init routes")
   #{["/" :get [http/html-body `confirm-transfer]]
     ["/direct" :post `fpx-callback-direct]
-    ["/indirect" :post [http/html-body `fpx-callback-indirect]]})
+    ["/indirect" :get [http/html-body `fpx-callback-indirect]]})
 
 ;;; Interceptors ;;;
 

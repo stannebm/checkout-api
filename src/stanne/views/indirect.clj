@@ -2,9 +2,24 @@
   (:require
    [stanne.views.layout :refer [layout]]))
 
-(defn- to-table [{:keys [bank fpx_fpxTxnId fpx_txnAmount fpx_txnCurrency]}]
+(defn- parse-dt [s]
+  (str (subs s 0 4)
+       "-"
+       (subs s 4 6)
+       "-"
+       (subs s 6 8)
+       " "
+       (subs s 8 10)
+       ":"
+       (subs s 10 12)
+       ":"
+       (subs s 12 14)))
+
+(defn- to-table [{:keys [bank fpx_fpxTxnId fpx_fpxTxnTime fpx_sellerOrderNo fpx_txnAmount fpx_txnCurrency]}]
   {"Recipient" "Minor Basilica St. Anne BM"
    "Bank" bank
+   "Transaction Date/Time" (parse-dt fpx_fpxTxnTime)
+   "Seller Order Number" fpx_sellerOrderNo
    "Order Reference" fpx_fpxTxnId
    "FPX Transaction ID" fpx_fpxTxnId
    "Amount" (str fpx_txnCurrency fpx_txnAmount)})
