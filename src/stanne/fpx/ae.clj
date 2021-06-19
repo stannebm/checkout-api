@@ -40,7 +40,7 @@
      :form-params (assoc form-params :fpx_checkSum checksum)}))
 
 (comment
-  (let [{:keys [form-params]} (ar/authorization-request (fpx/config :dev))
+  (let [{:keys [form-params]} (ar/authorization-request "100.00" (fpx/config :dev))
         {:keys [url form-params]} (authorization-enquiry form-params (fpx/config :dev))
         resp (client/post url {:form-params form-params})]
     resp))

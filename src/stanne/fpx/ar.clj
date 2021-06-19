@@ -29,7 +29,7 @@
 
 (defn authorization-request
   "For UAT testing, use buyerBankId=TEST0021 and username/password = 1234/1234"
-  [{:keys [exchange-id seller-id msg-token fpx-version pki endpoints]}]
+  [txn-amount {:keys [exchange-id seller-id msg-token fpx-version pki endpoints]}]
   (let [msg-type "AR"
         timestamp (utils/timestamp-id)
         form-params {:fpx_msgType msg-type
@@ -41,7 +41,7 @@
                      :fpx_sellerId seller-id
                      :fpx_sellerBankCode "01"
                      :fpx_txnCurrency "MYR"
-                     :fpx_txnAmount "1.00"
+                     :fpx_txnAmount txn-amount
                      :fpx_buyerEmail ""
                      :fpx_buyerName ""
                      :fpx_buyerBankId "TEST0021" ;; should be dissoc-ed in dynamic page
@@ -60,6 +60,6 @@
      :form-params (assoc form-params :fpx_checkSum checksum)}))
 
 (comment
-  (let [{:keys [url form-params]} (authorization-request (fpx/config :dev))
+  (let [{:keys [url form-params]} (authorization-request "33.99" (fpx/config :dev))
         resp (client/post url {:form-params form-params})]
     resp))

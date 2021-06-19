@@ -4,9 +4,10 @@
    [stanne.fpx.ar :as ar]
    [stanne.fpx.be :as be]))
 
-(defn home-view [{:keys [config bank-mapping]}]
+(defn home-view [txn-amount
+                 {:keys [config bank-mapping]}]
   (let [banks (be/bank-list config bank-mapping)
-        ar (ar/authorization-request config)
+        ar (ar/authorization-request txn-amount config)
         url (:url ar)
         form-params (-> ar
                         :form-params

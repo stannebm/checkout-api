@@ -9,13 +9,22 @@
    [ring.util.response :as r]
    [stanne.fpx.ac :refer [authorization-confirmation]]
    [stanne.fpx.core :as fpx]
+   [stanne.views.error-msg :refer [error-msg-view]]
    [stanne.views.home :refer [home-view]]
    [stanne.views.indirect :refer [indirect-view]]))
 
 (defn confirm-transfer
   "Post to FPX's AR endpoint"
-  [{:keys [fpx-data]}]
-  (r/response (home-view fpx-data)))
+  [{:keys [fpx-data params]}]
+  (let [parse-float #(when-not (empty? %) (Float/parseFloat %))
+        txn-amount (some-> params :amount parse-float)
+        to-price #(format "%.2f" %)
+        render-err #(r/response (error-msg-view %))]
+    (cond
+      (not (float? txn-amount)) (render-err "Missing transaction amount")
+      (< txn-amount 1) (render-err "Invalid transaction amount (Less than RM1)")
+      (> txn-amount 30000) (render-err "Invalid transaction amount (More than RM30,000)")
+      :else (r/response (home-view (to-price txn-amount) fpx-data)))))
 
 (defn fpx-callback-direct
   "FPX direct AC callback (text)"
