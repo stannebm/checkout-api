@@ -26,9 +26,9 @@
         msg (cond
               (contains? #{:ok :pending-authorization} (:status ac)) "OK"
               :else "FAILED")]
-    (log/debug :event :callback-direct
-               :form-params form-params
-               :message (str "DIRECT MESSAGE: " msg))
+    (log/info :event :callback-direct
+              :form-params form-params
+              :message (str "DIRECT MESSAGE: " msg))
     (r/response msg)))
 
 (defn fpx-callback-indirect
@@ -43,7 +43,7 @@
 
 (defmethod ig/init-key ::main
   [_ _]
-  (log/debug :event "init routes")
+  (log/info :event "init routes")
   #{["/" :get [http/html-body `confirm-transfer]]
     ["/direct" :any `fpx-callback-direct]
     ["/indirect" :any [http/html-body `fpx-callback-indirect]]})
