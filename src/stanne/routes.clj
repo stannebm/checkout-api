@@ -16,7 +16,7 @@
 (defn confirm-transfer
   "Post to FPX's AR endpoint"
   [{:keys [fpx-data params]}]
-  (let [parse-float #(when-not (empty? %) (Float/parseFloat %))
+  (let [parse-float #(and (seq %) (Float/parseFloat %))
         txn-amount (some-> params :amount parse-float)
         to-price #(format "%.2f" %)
         render-err #(r/response (error-msg-view %))]

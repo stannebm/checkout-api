@@ -1,5 +1,8 @@
-build: clean
+build: clean lint
 	lein uberjar
+
+lint:
+	lein kibit
 
 release:
 	scp target/stanne-0.0.1-snapshot-standalone.jar	root@arch:/root/fpx-api.jar

@@ -28,9 +28,8 @@
 (defn verify [msg signature {:keys [public-key]}]
   (let [pubkey (keys/public-key public-key)
         signature-b (hex->bytes signature)]
-    (-> msg
-        (dsa/verify signature-b {:key pubkey
-                                 :alg algorithm}))))
+    (dsa/verify msg signature-b {:key pubkey
+                                 :alg algorithm})))
 
 (defn parse-nvp [nvp]
   (let [process (comp

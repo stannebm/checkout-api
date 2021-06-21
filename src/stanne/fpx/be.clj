@@ -12,8 +12,7 @@
   (let [msg-type "BE"
         url (:bank-list endpoints)
         request-params (str/join "|" [msg-token msg-type exchange-id fpx-version])
-        signature (-> request-params
-                      (utils/sign {:private-key (:merchant-key pki)}))
+        signature (utils/sign request-params {:private-key (:merchant-key pki)})
         form-params {:fpx_msgType msg-type
                      :fpx_msgToken msg-token
                      :fpx_sellerExId exchange-id
