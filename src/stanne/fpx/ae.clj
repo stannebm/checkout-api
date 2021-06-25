@@ -44,15 +44,23 @@
     (client/post url {:form-params form-params})))
 
 (comment
-  (let [ar (ar/authorization-request "100.00" (fpx/config :dev))
-        _ (client/post (ar :url) {:form-params (ar :form-params)})]
-    (authorization-enquiry (ar :form-params) (fpx/config :dev)))
+  (let [fpx-config (fpx/config :dev)
+        bank-mapping (fpx/bank-mapping :dev)]
 
-  (let [config (fpx/config :dev)
-        ar (ar/authorization-request "100.00" config)
-        _ (client/post (ar :url) {:form-params (ar :form-params)})]
-    (prn "First AE call:")
-    (-> (call-authorization-enquiry (ar :form-params) config)
-        :body
-        utils/parse-nvp
-        prn)))
+    ;; check request params
+    (let [ar (ar/authorization-request {:txn-amount "100.00"
+                                        :fpx-config fpx-config
+                                        :bank-mapping bank-mapping})
+          _ (client/post (ar :url) {:form-params (ar :form-params)})]
+      (authorization-enquiry (ar :form-params) (fpx/config :dev)))
+
+    ;; check response
+    (let [ar (ar/authorization-request {:txn-amount "100.00"
+                                        :fpx-config fpx-config
+                                        :bank-mapping bank-mapping})
+          _ (client/post (ar :url) {:form-params (ar :form-params)})]
+      (prn "First AE call:")
+      (-> (call-authorization-enquiry (ar :form-params) fpx-config)
+          :body
+          utils/parse-nvp
+          prn))))

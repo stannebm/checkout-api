@@ -1,19 +1,19 @@
 (ns stanne.views.home
   (:require
    [stanne.views.layout :refer [layout]]
-   [stanne.fpx.ar :as ar]
-   [stanne.fpx.be :as be]))
+   [jsonista.core :as json]
+   [stanne.fpx.ar :as ar]))
 
 (defn home-view [txn-amount
                  {:keys [config bank-mapping]}]
-  (let [banks (be/bank-list config bank-mapping)
-        ar (ar/authorization-request txn-amount config)
-        url (:url ar)
-        form-params (-> ar
-                        :form-params
-                        (dissoc :fpx_buyerBankId))]
+  (let [ar (ar/authorization-request {:txn-amount txn-amount
+                                      :fpx-config config
+                                      :bank-mapping bank-mapping})
+        {:keys [url banks checksums form-params]} ar
+        x-data {:selectedBank ""
+                :checksums checksums}]
     (layout
-     [:div.p-5.text-lg {:x-data "{ selectedBank: \"\" }"}
+     [:div.p-5.text-lg {:x-data (json/write-value-as-string x-data)}
 
       [:img {:class "w-36"
              :src "/fpx-logo.png"}]
@@ -45,6 +45,10 @@
          [:input {:type "hidden"
                   :value value
                   :name field}])
+
+       [:input {:type "hidden"
+                :name "fpx_checkSum"
+                :x-model "checksums[selectedBank]"}]
 
        [:p {:class "text-sm text-gray-500 px-3 py-5 mt-2"}
         "By clicking on the “Proceed” button, you hereby agree with "
