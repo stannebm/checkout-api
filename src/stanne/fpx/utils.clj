@@ -33,8 +33,10 @@
 
 (defn parse-nvp [nvp]
   (let [process (comp
-                 (fn [[field value]]
-                   [(keyword field) (url/url-decode value)])
+                 (fn [maybe-pair]
+                   (let [field (first maybe-pair)
+                         value (or (second maybe-pair) "")]
+                     [(keyword field) (url/url-decode value)]))
                  #(str/split % #"="))]
     (->> (str/split nvp #"&")
          (map process)
