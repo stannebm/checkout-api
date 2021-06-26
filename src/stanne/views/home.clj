@@ -1,14 +1,18 @@
 (ns stanne.views.home
   (:require
-   [stanne.views.layout :refer [layout]]
+   [io.pedestal.log :as log]
    [jsonista.core :as json]
-   [stanne.fpx.ar :as ar]))
+   [stanne.fpx.ar :as ar]
+   [stanne.views.layout :refer [layout]]))
 
 (defn home-view [txn-amount
                  {:keys [config bank-mapping]}]
   (let [ar (ar/authorization-request {:txn-amount txn-amount
                                       :fpx-config config
                                       :bank-mapping bank-mapping})
+        _ (log/info :event :ar
+                    :details ar)
+
         {:keys [url banks checksums form-params]} ar
         x-data {:selectedBank ""
                 :checksums checksums}]

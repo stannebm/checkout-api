@@ -4,7 +4,8 @@
    [clojure.string :as str]
    [stanne.fpx.ar :as ar]
    [stanne.fpx.core :as fpx]
-   [stanne.fpx.utils :as utils]))
+   [stanne.fpx.utils :as utils]
+   [stubs :as stubs]))
 
 (def ^:private checksum-fields
   [:fpx_buyerAccNo
@@ -61,6 +62,16 @@
           _ (client/post (ar :url) {:form-params (ar :form-params)})]
       (prn "First AE call:")
       (-> (call-authorization-enquiry (ar :form-params) fpx-config)
+          :body
+          utils/parse-nvp
+          prn))
+
+    ;; use stub
+    (let [ar (stubs/ar-req)
+          checksum ((ar :checksums) "TEST0021")
+          params (-> ar :form-params (assoc :fpx_checkSum checksum
+                                            :fpx_buyerBankId "TEST0021"))]
+      (-> (call-authorization-enquiry params (fpx/config :dev))
           :body
           utils/parse-nvp
           prn))))
