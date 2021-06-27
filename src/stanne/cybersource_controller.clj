@@ -3,7 +3,8 @@
    [clojure.edn :as edn]
    [ring.util.response :as r]
    [stanne.cybersource.core :refer [config mk-params mk-signature]]
-   [stanne.views.cybersource-home :refer [home-view]]))
+   [stanne.views.cybersource-home :refer [home-view]]
+   [io.pedestal.log :as log]))
 
 (defn cybersource-home
   "Render a form that POST to CyberSource hosted checkout"
@@ -16,3 +17,17 @@
     (r/response (home-view {:cs-params cs-params
                             :cs-signature cs-signature
                             :cs-endpoint (config :endpoint)}))))
+
+(defn cybersource-done-notify
+  "Host-to-host callback from CyberSource"
+  [{:keys [params]}]
+  (log/info :event :cybersource-notify
+            :params params)
+  (r/response "OK"))
+
+(defn cybersource-done-receipt
+  "Host-to-host callback from CyberSource"
+  [{:keys [params]}]
+  {:status 200
+   :body params
+   :headers {"Content-Type" "text/plain"}})

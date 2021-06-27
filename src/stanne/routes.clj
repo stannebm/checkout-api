@@ -5,7 +5,7 @@
    [io.pedestal.http :as http]
    [io.pedestal.interceptor :refer [interceptor]]
    [io.pedestal.log :as log]
-   [stanne.cybersource-controller :refer [cybersource-home]]
+   [stanne.cybersource-controller :refer [cybersource-done-notify cybersource-done-receipt cybersource-home]]
    [stanne.fpx-controller :refer [fpx-callback-direct fpx-callback-indirect fpx-home]]))
 
 (defn health
@@ -19,13 +19,15 @@
   [_ _]
   (log/info :event "init routes")
   #{["/" :get [http/html-body `health]]
-    ;;; FPX
+;;; FPX
     ["/fpx" :get [http/html-body `fpx-home]]
     ["/direct" :any `fpx-callback-direct]
     ["/indirect" :any [http/html-body `fpx-callback-indirect]]
 
-    ;;; Cybersource
-    ["/cybersource" :get [http/html-body `cybersource-home]]})
+;;; Cybersource
+    ["/cybersource" :get [http/html-body `cybersource-home]]
+    ["/cybersource-done-notify" :any `cybersource-done-notify]
+    ["/cybersource-done-receipt" :any [http/html-body `cybersource-done-receipt]]})
 
 (defn service-error-handler []
   (interceptor
