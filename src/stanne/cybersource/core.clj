@@ -46,9 +46,10 @@
    ::unsigned_field_names ""})
 
 (defn- to-nvp [params]
-  (->> (for [f required-fields]
-         (str/join "=" [(name f) (params f)]))
-       (str/join ",")))
+  (str/join
+   ","
+   (for [f required-fields]
+     (str/join "=" [(name f) (params f)]))))
 
 (defn mk-params [reference-no amount]
   (let [params (-> config
@@ -61,8 +62,7 @@
       parsed)))
 
 (defn mk-signature [cs-params]
-  (-> (to-nvp cs-params)
-      (mk-hmac-hash (config :secret))))
+  (mk-hmac-hash (to-nvp cs-params) (config :secret)))
 
 (comment
   (let [cs-params (mk-params "ref1" "12.10")]
