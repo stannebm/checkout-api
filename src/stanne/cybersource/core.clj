@@ -50,11 +50,11 @@
          (str/join "=" [(name f) (params f)]))
        (str/join ",")))
 
-(defn mk-params [reference-number amount]
+(defn mk-params [reference-no amount]
   (let [params (-> config
                    default-params
-                   (merge {::reference_number reference-number
-                           ::amount (format "%.2f" amount)}))
+                   (merge {::reference_number reference-no
+                           ::amount amount}))
         parsed (s/conform ::required-signed-fields params)]
     (if (s/invalid? parsed)
       (throw (ex-info "Invalid input" (s/explain-data ::required-signed-fields params)))

@@ -1,20 +1,10 @@
 (ns stanne.views.fpx-home
   (:require
-   [io.pedestal.log :as log]
    [jsonista.core :as json]
-   [stanne.fpx.ar :as ar]
    [stanne.views.layout :refer [layout]]))
 
-(defn home-view [txn-amount
-                 {:keys [config bank-mapping]}]
-  (let [ar (ar/authorization-request {:txn-amount txn-amount
-                                      :fpx-config config
-                                      :bank-mapping bank-mapping})
-        _ (log/info :event :ar
-                    :details ar)
-
-        {:keys [url banks checksums form-params]} ar
-        x-data {:selectedBank ""
+(defn home-view [{:keys [url banks checksums form-params tnc]}]
+  (let [x-data {:selectedBank ""
                 :checksums checksums}]
     (layout
      [:div.p-5.text-lg {:x-data (json/write-value-as-string x-data)}
@@ -26,7 +16,7 @@
        "Online Banking"]
 
       [:div.my-3.mb-8.p-3.bg-gray-200.text-gray-600.text-md
-       [:p "Order Reference: " (form-params :fpx_sellerOrderNo)]
+       [:p "Reference No: " (form-params :fpx_sellerOrderNo)]
        [:p "Total: RM" (form-params :fpx_txnAmount)]]
 
       [:form.m-0 {:method "post"
@@ -58,7 +48,7 @@
         "By clicking on the “Proceed” button, you hereby agree with "
         [:br]
         [:a {:class "text-gray-500 underline font-bold"
-             :href (-> config :endpoints :tnc)
+             :href tnc
              :target "_blank"}
          "FPX’s Terms & Conditions"]]
 

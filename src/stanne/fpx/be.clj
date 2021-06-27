@@ -2,7 +2,7 @@
   (:require
    [clojure.string :as str]
    [clj-http.client :as client]
-   [stanne.fpx.core :as fpx]
+   [stanne.fpx.settings :as settings]
    [stanne.fpx.utils :as utils]))
 
 (def ^:private bank-status {"A" :available
@@ -55,5 +55,5 @@
 
 (comment
   ;; bank list
-  (bank-list (fpx/config :dev)
-             (fpx/bank-mapping :dev)))
+  (bank-list (settings/config :dev)
+             (settings/bank-mapping :dev)))

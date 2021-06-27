@@ -14,7 +14,7 @@
      "Credit/Debit Card"]
 
     [:div.my-3.mb-8.p-3.bg-gray-200.text-gray-600.text-md
-     [:p "Order Reference: " (cs-params ::cs/reference_number)]
+     [:p "Reference No: " (cs-params ::cs/reference_number)]
      [:p "Total: RM" (cs-params ::cs/amount)]]
 
     [:form.m-0 {:method "post"
