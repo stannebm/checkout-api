@@ -27,14 +27,14 @@
 
 ;;; Main ;;;
 
-(defn config []
+(defn- config []
   {:endpoint (env :cybersource-post-endpoint)
    :profile-id (env :cybersource-profile-id)
    :access-key (env :cybersource-access-key)
    :secret (env :cybersource-secret)
    :currency "MYR"})
 
-(defn default-params [{:keys [access-key profile-id currency]}]
+(defn- default-params [{:keys [access-key profile-id currency]}]
   {:access_key access-key
    :profile_id profile-id
    :transaction_type "authorization"
@@ -46,8 +46,6 @@
    :unsigned_field_names ""})
 
 (defn mk-params [reference-number amount]
-  {:pre [(s/valid? ::reference_number reference-number)
-         (s/valid? ::amount (parse-num-str amount))]}
   (let [params (-> (config)
                    default-params
                    (merge {:reference_number reference-number
@@ -59,4 +57,4 @@
       parsed)))
 
 (comment
-  (mk-params "ref1" "12"))
+  (mk-params "ref1" "-12"))
