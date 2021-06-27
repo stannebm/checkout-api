@@ -1,6 +1,6 @@
-# StAnne FPX API
+# StAnne Checkout API (Cybersource/FPX)
 
-This project integrates FPX API according to the [official documentation](https://fpxexchange.myclear.org.my:8443/MerchantIntegrationKit/)
+This project integrates FPX and Cybersource API according to the [official documentation](https://fpxexchange.myclear.org.my:8443/MerchantIntegrationKit/)
 
 FPX is a payment gateway that provides online banking services to internet businesses.
 
@@ -34,6 +34,12 @@ To learn more about configuring Logback, read its [documentation](http://logback
 FPX certificate and merchant exchange key must be available at path `/etc/fpx`.
 
 FPX is configured [here](/src/stanne/fpx/core.clj)
+
+Cybersource is configured at the profile level:
+
+https://ebc2test.cybersource.com/ebc2/app/Home
+
+CyberSource's environment variables must be present at `/etc/checkout-api/env`
 
 ## UAT test
 
