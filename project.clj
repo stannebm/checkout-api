@@ -11,6 +11,7 @@
                  [hiccup/hiccup "2.0.0-alpha2"]
                  [clj-http "3.12.0"]
                  [metosin/jsonista "0.3.3"]
+                 [environ "1.2.0"]
 
                  ;; [org.bouncycastle/bcprov-jdk15 "1.46"]
                  ;; [commons-io/commons-io "2.4"]
