@@ -5,15 +5,15 @@
    [io.pedestal.http :as http]
    [io.pedestal.interceptor :refer [interceptor]]
    [io.pedestal.log :as log]
-   [stanne.fpx-controller :refer [fpx-callback-direct fpx-callback-indirect fpx-home]]
    [stanne.cybersource-controller :refer [cybersource-home]]
-   [stanne.fpx.core :as fpx]))
+   [stanne.fpx-controller :refer [fpx-callback-direct fpx-callback-indirect fpx-home]]))
 
 (defn health
   "Does nothing except 200"
   [_]
   {:status 200
-   :body "OK"})
+   :body "OK"
+   :headers {"Content-Type" "text/plain"}})
 
 (defmethod ig/init-key ::main
   [_ _]
@@ -53,17 +53,14 @@
           :else
           (assoc ctx :io.pedestal.interceptor.chain/error ex))))}))
 
-(defn fpx-data-interceptor [env]
-  (let [fpx-data {:env env
-                  :config (fpx/config env)
-                  :bank-mapping (fpx/bank-mapping env)}]
-    (interceptor
-     {:name ::fpx-data
-      :enter (fn [ctx]
-               (update ctx :request
-                       assoc :fpx-data fpx-data))})))
+(defn fpx-app-env-interceptor [env]
+  (interceptor
+   {:name ::app-env
+    :enter (fn [ctx]
+             (update ctx :request
+                     assoc :app-env env))}))
 
 (defmethod ig/init-key ::interceptors
   [_ env]
   [(service-error-handler)
-   (fpx-data-interceptor (:env env))])
+   (fpx-app-env-interceptor (:env env))])

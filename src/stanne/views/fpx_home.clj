@@ -66,4 +66,4 @@
                  :x-bind:disabled "selectedBank.length === 0"
                  :x-bind:class "{\"opacity-50\": selectedBank.length === 0, \"pointer-events-none\": selectedBank.length === 0}"
                  :class "inline-flex justify-center mb-2 py-3 px-6 border border-transparent shadow-sm text-md font-medium rounded-md text-white bg-green-500 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"}
-        "Continue"]]])))
+        "Confirm"]]])))
