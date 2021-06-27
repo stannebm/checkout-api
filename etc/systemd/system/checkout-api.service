@@ -1,5 +1,5 @@
 [Unit]
-Description=FPX api
+Description=Checkout api
 After=network.target network-online.target
 Requires=network-online.target
 
@@ -7,7 +7,7 @@ Requires=network-online.target
 Type=simple
 User=root
 Group=root
-ExecStart=/usr/bin/java -jar /root/fpx-api.jar
+ExecStart=/usr/bin/java -jar /root/checkout-api.jar
 Restart=on-failure
 LimitNOFILE=1048576
 

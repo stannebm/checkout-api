@@ -5,17 +5,17 @@ lint:
 	lein kibit
 
 release:
-	scp target/stanne-0.0.1-snapshot-standalone.jar	root@stanne:/root/fpx-api.jar
-	ssh stanne "systemctl restart fpx-api"
+	scp target/stanne-0.0.1-snapshot-standalone.jar	root@stanne:/root/checkout-api.jar
+	ssh stanne "systemctl restart checkout-api"
 
 create-service:
-	scp etc/systemd/system/fpx-api.service root@stanne:/etc/systemd/system/fpx-api.service
+	scp etc/systemd/system/checkout-api.service root@stanne:/etc/systemd/system/checkout-api.service
 
 status:
-	ssh stanne "systemctl status fpx-api"
+	ssh stanne "systemctl status checkout-api"
 
 log:
-	ssh stanne "journalctl -u fpx-api -f"
+	ssh stanne "journalctl -u checkout-api -f"
 
 pull-production-logs:
 	rm -f logs/prod/*
