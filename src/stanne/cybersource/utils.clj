@@ -1,11 +1,11 @@
 (ns stanne.cybersource.utils
-  (:require [clojure.edn :as edn]
-            [buddy.core.mac :as mac]
-            [clojure.string :as str]
-            [buddy.core.codecs :as codecs]))
+  (:require
+   [buddy.core.codecs :as codecs]
+   [buddy.core.mac :as mac]
+   [clojure.string :as str]))
 
 (defn txn-uuid []
-  (java.util.UUID/randomUUID))
+  (-> (java.util.UUID/randomUUID) .toString (str/replace #"-" "")))
 
 (defn current-date-time []
   (let [date (java.util.Date.)
@@ -14,16 +14,7 @@
         _ (.setTimeZone formatter tz)]
     (.format formatter date)))
 
-(defn parse-num-str [amount]
-  (edn/read-string amount))
-
-(defn to-nvp [params]
-  (->> [(name n) v]
-       (str/join "=")
-       (for [[n v] params])
-       (str/join ",")))
-
-(defn mk-hmac-hash [data {:keys [secret]}]
+(defn mk-hmac-hash [data secret]
   (-> (mac/hash data {:key secret
                       :alg :hmac+sha256})
       (codecs/bytes->b64)

@@ -1,8 +1,9 @@
 (ns stanne.views.cybersource-home
   (:require
-   [stanne.views.layout :refer [layout]]))
+   [stanne.views.layout :refer [layout]]
+   [stanne.cybersource.core :as cs]))
 
-(defn home-view []
+(defn home-view [{:keys [cs-params cs-endpoint cs-signature]}]
   (layout
    [:div.p-5.text-lg
 
@@ -13,16 +14,20 @@
      "Credit/Debit Card"]
 
     [:div.my-3.mb-8.p-3.bg-gray-200.text-gray-600.text-md
-     [:p "Order Reference: " "order ref"]
-     [:p "Total: RM" "3001"]]
+     [:p "Order Reference: " (cs-params ::cs/reference_number)]
+     [:p "Total: RM" (cs-params ::cs/amount)]]
 
     [:form.m-0 {:method "post"
-                :action "REPLACE URL"}
+                :action cs-endpoint}
 
-     #_(for [[field value] form-params]
-         [:input {:type "hidden"
-                  :value value
-                  :name field}])
+     (for [[field value] cs-params]
+       [:input {:type "hidden"
+                :value value
+                :name (name field)}])
+
+     [:input {:type "hidden"
+              :value cs-signature
+              :name "signature"}]
 
      [:button {:type "submit"
                :x-bind:disabled "selectedBank.length === 0"
