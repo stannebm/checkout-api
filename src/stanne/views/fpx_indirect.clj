@@ -1,4 +1,4 @@
-(ns stanne.views.indirect
+(ns stanne.views.fpx-indirect
   (:require
    [stanne.views.layout :refer [layout]]))
 

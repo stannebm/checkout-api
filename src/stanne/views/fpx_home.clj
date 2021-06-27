@@ -1,4 +1,4 @@
-(ns stanne.views.home
+(ns stanne.views.fpx-home
   (:require
    [io.pedestal.log :as log]
    [jsonista.core :as json]
