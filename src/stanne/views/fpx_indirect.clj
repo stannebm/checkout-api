@@ -35,7 +35,7 @@
     (case status
       :ok
       [:h2.text-3xl.py-3.mb-6.text-green-500 {:style {:font-family "Lato"}}
-       "Payment Successful"]
+       "Thank you"]
 
       :pending-authorization
       [:h2.text-3xl.py-3.mb-6.text-green-500 {:style {:font-family "Lato"}}

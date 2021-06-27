@@ -26,8 +26,8 @@
 
 ;;; Cybersource
     ["/cybersource" :get [http/html-body `cybersource-home]]
-    ["/cybersource-done-notify" :any `cybersource-done-notify]
-    ["/cybersource-done-receipt" :any [http/html-body `cybersource-done-receipt]]})
+    ["/cybersource-done-notify" :post `cybersource-done-notify]
+    ["/cybersource-done-receipt" :get `cybersource-done-receipt]})
 
 (defn service-error-handler []
   (interceptor

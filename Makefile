@@ -1,4 +1,4 @@
-build: clean lint
+build: clean
 	lein uberjar
 
 lint:

@@ -7,8 +7,8 @@
   (layout
    [:div.p-5.text-lg
 
-    [:img {:class "w-36"
-           :src "/fpx-logo.png"}]
+    [:img {:class "w-56 mb-10"
+           :src "/cybersource-logo.svg"}]
 
     [:h2.text-3xl.py-3.mb-6.text-gray-500 {:style {:font-family "Lato"}}
      "Credit/Debit Card"]
