@@ -5,11 +5,13 @@ lint:
 	lein kibit
 
 release:
-	scp target/stanne-0.0.1-snapshot-standalone.jar	root@stanne:/root/checkout-api.jar
+	scp target/checkout-api-0.0.1-snapshot-standalone.jar	root@stanne:/root/checkout-api.jar
 	ssh stanne "systemctl restart checkout-api"
 
 create-service:
 	scp etc/systemd/system/checkout-api.service root@stanne:/etc/systemd/system/checkout-api.service
+	ssh stanne "systemctl start checkout-api"
+	ssh stanne "systemctl enable checkout-api"
 
 status:
 	ssh stanne "systemctl status checkout-api"

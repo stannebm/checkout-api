@@ -1,5 +1,5 @@
-(defproject stanne "0.0.1-SNAPSHOT"
-  :description "StAnne FPX integration"
+(defproject checkout-api "0.0.1-SNAPSHOT"
+  :description "StAnne FPX and CyberSource checkout integration"
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [io.pedestal/pedestal.service "0.5.9"]
                  [io.pedestal/pedestal.jetty "0.5.9"]
