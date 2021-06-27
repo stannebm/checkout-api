@@ -1,4 +1,4 @@
-(ns stanne.views.indirect
+(ns stanne.views.fpx-indirect
   (:require
    [stanne.views.layout :refer [layout]]))
 
@@ -21,7 +21,7 @@
    "Bank" bank
    "Transaction Date/Time" (parse-dt fpx_fpxTxnTime)
    "Seller Order Number" fpx_sellerOrderNo
-   "Order Reference" fpx_fpxTxnId
+   "Reference No" fpx_fpxTxnId
    "FPX Transaction ID" fpx_fpxTxnId
    "Amount" (str fpx_txnCurrency fpx_txnAmount)})
 

@@ -3,7 +3,7 @@
    [clj-http.client :as client]
    [clojure.string :as str]
    [stanne.fpx.ar :as ar]
-   [stanne.fpx.core :as fpx]
+   [stanne.fpx.settings :as settings]
    [stanne.fpx.utils :as utils]
    [stubs :as stubs]))
 
@@ -45,18 +45,20 @@
     (client/post url {:form-params form-params})))
 
 (comment
-  (let [fpx-config (fpx/config :dev)
-        bank-mapping (fpx/bank-mapping :dev)]
+  (let [fpx-config (settings/config :dev)
+        bank-mapping (settings/bank-mapping :dev)]
 
     ;; check request params
-    (let [ar (ar/authorization-request {:txn-amount "100.00"
+    (let [ar (ar/authorization-request {:reference-no "REPLACE ME"
+                                        :amount "100.00"
                                         :fpx-config fpx-config
                                         :bank-mapping bank-mapping})
           _ (client/post (ar :url) {:form-params (ar :form-params)})]
-      (authorization-enquiry (ar :form-params) (fpx/config :dev)))
+      (authorization-enquiry (ar :form-params) (settings/config :dev)))
 
     ;; check response
-    (let [ar (ar/authorization-request {:txn-amount "100.00"
+    (let [ar (ar/authorization-request {:reference-no "REPLACE ME"
+                                        :amount "100.00"
                                         :fpx-config fpx-config
                                         :bank-mapping bank-mapping})
           _ (client/post (ar :url) {:form-params (ar :form-params)})]
@@ -68,10 +70,9 @@
 
     ;; use stub
     (let [ar (stubs/ar-req)
-          checksum ((ar :checksums) "TEST0021")
-          params (-> ar :form-params (assoc :fpx_checkSum checksum
+          params (-> ar :form-params (assoc :fpx_checkSum ((ar :checksums) "TEST0021")
                                             :fpx_buyerBankId "TEST0021"))]
-      (-> (call-authorization-enquiry params (fpx/config :dev))
+      (-> (call-authorization-enquiry params (settings/config :dev))
           :body
           utils/parse-nvp
           prn))))
