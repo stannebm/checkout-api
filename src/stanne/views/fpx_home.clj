@@ -1,11 +1,14 @@
 (ns stanne.views.fpx-home
   (:require
+   [io.pedestal.log :as log]
    [jsonista.core :as json]
    [stanne.views.layout :refer [layout]]))
 
-(defn home-view [{:keys [url banks checksums form-params tnc]}]
+(defn home-view [{:keys [url banks checksums form-params tnc]
+                  :as fpx-params}]
   (let [x-data {:selectedBank ""
                 :checksums checksums}]
+    (log/info :event :ar :fpx-params (dissoc fpx-params :checksums))
     (layout
      [:div.p-5.text-lg {:x-data (json/write-value-as-string x-data)}
 
