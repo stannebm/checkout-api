@@ -18,11 +18,15 @@
 (defn fpx-home
   "Render a form that POST to FPX's AR endpoint"
   [{:keys [app-env params]}]
-  (let [{:keys [reference-no amount]} params
+  (let [{:keys [reference_no amount email name]} params
         amount' (-> amount edn/read-string float)
         amount'' (format "%.2f" amount')
         fpx-params (and (pos? amount')
-                        (fpx/mk-params reference-no amount'' app-env))
+                        (fpx/mk-params {:reference-no reference_no
+                                        :amount amount''
+                                        :email email
+                                        :name name
+                                        :env app-env}))
         render-err #(r/response (error-msg-view %))]
     (cond
       (not (float? amount')) (render-err "Missing transaction amount")

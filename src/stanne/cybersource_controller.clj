@@ -10,10 +10,10 @@
 (defn cybersource-home
   "Render a form that POST to CyberSource hosted checkout"
   [{:keys [params]}]
-  (let [{:keys [reference-no amount email name]} params
+  (let [{:keys [reference_no amount email name]} params
         amount' (-> amount edn/read-string float)
         amount'' (format "%.2f" amount')
-        cs-params (and (pos? amount') (mk-params {:reference-no reference-no
+        cs-params (and (pos? amount') (mk-params {:reference-no reference_no
                                                   :amount amount''
                                                   :email email
                                                   :name name}))

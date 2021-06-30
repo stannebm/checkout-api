@@ -9,17 +9,23 @@
   (s/keys :req-un
           [::url ::banks ::checksums ::form-params ::tnc]))
 
-(defn mk-params [reference-no amount env]
+(defn mk-params [{:keys [reference-no amount email name env]}]
   {:pre [(s/valid? string? reference-no)
          (s/valid? ::amount-type amount)
          (s/valid? keyword? env)]
    :post [(s/valid? ::ar-params %)]}
   (let [ar (ar/authorization-request {:reference-no reference-no
                                       :amount amount
+                                      :email email
+                                      :name name
                                       :fpx-config (settings/config env)
                                       :bank-mapping (settings/bank-mapping env)})]
     ar))
 
 (comment
   ;; generate refence-no with `new Date().getTime()`
-  (mk-params "1624804617508" "10.11" :dev))
+  (mk-params {:reference-no "1624804617508"
+              :amount "10.11"
+              :env :dev
+              :email "noreal@fpx.my"
+              :name "noreal"}))

@@ -33,7 +33,9 @@
 
 (defn authorization-request
   "For UAT testing, use buyerBankId=TEST0021 and username/password = 1234/1234"
-  [{:keys [reference-no amount fpx-config bank-mapping]}]
+  [{:keys [reference-no amount email name fpx-config bank-mapping]
+    :or {email ""
+         name ""}}]
   (let [msg-type "AR"
         {:keys [exchange-id seller-id msg-token fpx-version pki endpoints]} fpx-config
         timestamp (utils/timestamp-id)
@@ -50,8 +52,8 @@
                 :fpx_sellerBankCode "01"
                 :fpx_txnCurrency "MYR"
                 :fpx_txnAmount amount
-                :fpx_buyerEmail ""
-                :fpx_buyerName ""
+                :fpx_buyerEmail email
+                :fpx_buyerName name
                 :fpx_buyerBankId ""
                 :fpx_buyerBankBranch ""
                 :fpx_buyerAccNo ""
