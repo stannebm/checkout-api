@@ -38,20 +38,19 @@
   "FPX direct AC callback (text)"
   [{:keys [app-env]
     :as request}]
-  (let [form-params #_(stubs/ac-stub) (-> request form-parser :form-params)
+  (let [form-params (-> request form-parser :form-params)
         ac (authorization-confirmation form-params (fpx-settings app-env))
-        msg (cond
-              (contains? #{:ok :pending-authorization} (:status ac)) "OK"
-              :else "FAILED")]
-    (log/info :event :callback-direct
+        status-simple (ac :status-simple)]
+    (log/info :event :fpx-ac-direct
               :form-params form-params
-              :message (str "DIRECT MESSAGE: " msg))
-    (r/response msg)))
+              :ac ac
+              :status-simple status-simple)
+    (r/response status-simple)))
 
 (defn fpx-callback-indirect
   "FPX indirect AC callback (HTML)"
   [{:keys [app-env]
     :as request}]
-  (let [form-params #_(stubs/ac-stub) (-> request form-parser :form-params)
+  (let [form-params (-> request form-parser :form-params)
         ac (authorization-confirmation form-params (fpx-settings app-env))]
     (r/response (indirect-view ac))))

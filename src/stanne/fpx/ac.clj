@@ -52,6 +52,12 @@
        "99" :pending-authorization
        :failed)
 
+     :status-simple
+     (case fpx_debitAuthCode
+       "00" "OK"
+       "99" "OK"
+       "FAILED")
+
      :relevant-info
      (select-keys ac-response' [:bank
                                 :fpx_fpxTxnId
