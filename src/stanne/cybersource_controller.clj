@@ -33,7 +33,7 @@
     (log/info :event :cybersource-notify
               :params params
               :reference-no req_reference_number
-              :status-simple)
+              :status status)
     (repo/save-txn-info {:env app-env
                          :provider :cybersource
                          :status status

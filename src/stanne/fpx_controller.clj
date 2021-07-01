@@ -41,11 +41,11 @@
     :as request}]
   (let [form-params (-> request form-parser :form-params)
         ac (authorization-confirmation form-params (fpx-settings app-env))
-        {:keys [[reference-no status-simple]]} ac]
+        {:keys [reference-no status-simple]} ac]
     (log/info :event :fpx-ac-direct
               :form-params form-params
               :reference-no reference-no
-              :status-simple status-simple
+              :status status-simple
               :ac-full-info ac)
     (repo/save-txn-info {:env app-env
                          :provider :fpx
