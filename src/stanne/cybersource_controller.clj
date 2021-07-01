@@ -28,17 +28,17 @@
   [{:keys [app-env]
     :as request}]
   (let [params (-> request form-parser :form-params)
-        {:keys [:req_reference_number decision]} params
+        {:keys [req_reference_number decision]} params
         status (case decision "ACCEPT" "OK" "FAILED")]
     (log/info :event :cybersource-notify
               :params params
               :reference-no req_reference_number
               :status-simple)
     (repo/save-txn-info {:env app-env
-                         :provider :fpx
+                         :provider :cybersource
                          :status status
                          :reference-no req_reference_number
-                         :info {:callback params}})
+                         :info {:cybersource-notify params}})
     (r/response "OK")))
 
 (defn cybersource-done-receipt
