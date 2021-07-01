@@ -29,7 +29,9 @@
     :as request}]
   (let [params (-> request form-parser :form-params)
         {:keys [req_reference_number decision]} params
-        status (case decision "ACCEPT" "OK" "FAILED")]
+        status (case decision
+                 "ACCEPT" "OK"
+                 "FAILED")]
     (log/info :event :cybersource-notify
               :params params
               :reference-no req_reference_number

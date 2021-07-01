@@ -35,8 +35,10 @@
                   :class "mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"}
 
          [:option {:value ""} "- Select Bank -"]
-         (for [{:keys [name code]} (map second banks)]
-           [:option {:value code} name])]]
+         (for [{:keys [name code status]} (map second banks)]
+           (case status
+             :available [:option {:value code} name]
+             [:option {:value ""} (str name " (offline)")]))]]
 
        (for [[field value] form-params]
          [:input {:type "hidden"

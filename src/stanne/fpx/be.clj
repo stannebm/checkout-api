@@ -43,8 +43,7 @@
                        :fpx_bankList
                        ((split-by #","))
                        (map (comp as-tuple (split-by #"~")))
-                       (sort-by (comp str/lower-case :name second))
-                       (filter (fn [[_ v]] (= :available (:status v)))))]
+                       (sort-by (comp str/lower-case :name second)))]
     (when-not checksum-ok?
       (throw (ex-info "Invalid BE checksum"
                       {:api :BE
