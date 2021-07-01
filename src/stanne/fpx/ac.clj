@@ -29,7 +29,7 @@
 
 (defn authorization-confirmation
   "Callback from FPX"
-  [{:keys [fpx_checkSum fpx_debitAuthCode]
+  [{:keys [fpx_checkSum fpx_debitAuthCode fpx_sellerExOrderNo]
     :as ac-response}
    {:keys [config bank-mapping]}]
   (let [msg (str/join "|" ((apply juxt checksum-fields) ac-response))
@@ -51,6 +51,9 @@
        "00" :ok
        "99" :pending-authorization
        :failed)
+
+     :reference-no
+     fpx_sellerExOrderNo
 
      :status-simple
      (case fpx_debitAuthCode

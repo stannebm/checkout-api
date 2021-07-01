@@ -5,6 +5,7 @@
    [io.pedestal.log :as log]
    [ring.util.response :as r]
    [stanne.cybersource.core :refer [config mk-params mk-signature]]
+   [stanne.repo :as repo]
    [stanne.views.cybersource-home :refer [home-view]]))
 
 (defn cybersource-home
@@ -24,10 +25,20 @@
 
 (defn cybersource-done-notify
   "Host-to-host callback from CyberSource"
-  [request]
-  (let [params (-> request form-parser :form-params)]
+  [{:keys [app-env]
+    :as request}]
+  (let [params (-> request form-parser :form-params)
+        {:keys [:req_reference_number decision]} params
+        status (case decision "ACCEPT" "OK" "FAILED")]
     (log/info :event :cybersource-notify
-              :params params)
+              :params params
+              :reference-no req_reference_number
+              :status-simple)
+    (repo/save-txn-info {:env app-env
+                         :provider :fpx
+                         :status status
+                         :reference-no req_reference_number
+                         :info {:callback params}})
     (r/response "OK")))
 
 (defn cybersource-done-receipt

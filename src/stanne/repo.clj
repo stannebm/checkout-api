@@ -7,9 +7,10 @@
    [environ.core :as environ]
    [io.pedestal.log :as log]))
 
-(defn- repo-backend [app-env]
-  (case app-env
-    :dev "http://localhost:4000/api/payment_notification"
+(defn- repo-backend [env]
+  (case env
+    ;; :dev "http://localhost:4000/api/payment_notification"
+    :dev "https://admin.minorbasilicastannebm.com/api/payment_notification"
     :prod "https://admin.minorbasilicastannebm.com/api/payment_notification"))
 
 (defn- hmac-sign
@@ -20,10 +21,10 @@
       (codecs/bytes->b64)
       (codecs/bytes->str)))
 
-(defn save-txn-callback
+(defn save-txn-info
   "Inform backend about the IPN callback from FPX/Cybersource"
-  [{:keys [app-env provider reference-no info status]}]
-  (let [backend (str (repo-backend app-env) "/" provider)
+  [{:keys [env provider reference-no info status]}]
+  (let [backend (str (repo-backend env) "/" provider)
         secret (environ/env :checkout-api-secret)
         sig (hmac-sign (str/join "|" [provider reference-no status]) secret)]
     (letfn [(call-api
@@ -35,4 +36,5 @@
                                         :signature sig
                                         :info info}}
                             :content-type :json}))]
-      (log/info :event :save-txn-callback {:response (call-api)}))))
+      (log/info :event :save-txn-callback
+                :details {:response (call-api)}))))

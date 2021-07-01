@@ -7,6 +7,7 @@
    [stanne.fpx.ac :refer [authorization-confirmation]]
    [stanne.fpx.core :as fpx]
    [stanne.fpx.settings :as settings]
+   [stanne.repo :as repo]
    [stanne.views.error-msg :refer [error-msg-view]]
    [stanne.views.fpx-home :refer [home-view]]
    [stanne.views.fpx-indirect :refer [indirect-view]]))
@@ -40,11 +41,17 @@
     :as request}]
   (let [form-params (-> request form-parser :form-params)
         ac (authorization-confirmation form-params (fpx-settings app-env))
-        status-simple (ac :status-simple)]
+        {:keys [[reference-no status-simple]]} ac]
     (log/info :event :fpx-ac-direct
               :form-params form-params
-              :ac ac
-              :status-simple status-simple)
+              :reference-no reference-no
+              :status-simple status-simple
+              :ac-full-info ac)
+    (repo/save-txn-info {:env app-env
+                         :provider :fpx
+                         :status status-simple
+                         :reference-no reference-no
+                         :info {:ac ac}})
     (r/response status-simple)))
 
 (defn fpx-callback-indirect
