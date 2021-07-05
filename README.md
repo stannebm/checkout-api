@@ -29,6 +29,10 @@ To learn more about configuring Logback, read its [documentation](http://logback
 5. After changing a file, run `M-x: cider-ns-refresh`
 6. Refresh `localhost:8080`
 
+## Deployment
+
+run `make && make release`
+
 ## Requirements
 
 FPX certificate and merchant exchange key must be available at path `/etc/fpx`.

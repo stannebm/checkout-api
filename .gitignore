@@ -38,5 +38,6 @@ build/
 
 # Custom
 .lsp
-/.envrc
+#/.envrc
 /.env.prod
+/.env.local
