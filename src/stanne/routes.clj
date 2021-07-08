@@ -1,6 +1,7 @@
 (ns stanne.routes
   (:require
    [clojure.core.match :as core.match]
+   [ring.util.response :as r]
    [integrant.core :as ig]
    [io.pedestal.http :as http]
    [io.pedestal.interceptor :refer [interceptor]]
@@ -15,6 +16,11 @@
    :body "OK"
    :headers {"Content-Type" "text/plain"}})
 
+(defn redirect-to-website
+  "Render receipt page"
+  [_]
+  (r/redirect "https://www.minorbasilicastannebm.com"))
+
 (defmethod ig/init-key ::main
   [_ _]
   (log/info :event "init routes")
@@ -27,6 +33,7 @@
 ;;; Cybersource
     ["/cybersource" :get [http/html-body `cybersource-home]]
     ["/cybersource-done-notify" :post `cybersource-done-notify]
+    ["/cybersource-done-receipt" :get `redirect-to-website]
     ["/cybersource-receipt" :post [http/html-body `cybersource-receipt]]})
 
 (defn service-error-handler []
