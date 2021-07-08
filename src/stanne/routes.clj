@@ -5,7 +5,7 @@
    [io.pedestal.http :as http]
    [io.pedestal.interceptor :refer [interceptor]]
    [io.pedestal.log :as log]
-   [stanne.cybersource-controller :refer [cybersource-done-notify cybersource-done-receipt cybersource-home]]
+   [stanne.cybersource-controller :refer [cybersource-done-notify cybersource-home cybersource-receipt]]
    [stanne.fpx-controller :refer [fpx-callback-direct fpx-callback-indirect fpx-home]]))
 
 (defn health
@@ -27,7 +27,7 @@
 ;;; Cybersource
     ["/cybersource" :get [http/html-body `cybersource-home]]
     ["/cybersource-done-notify" :post `cybersource-done-notify]
-    ["/cybersource-done-receipt" :get `cybersource-done-receipt]})
+    ["/cybersource-receipt" :post [http/html-body `cybersource-receipt]]})
 
 (defn service-error-handler []
   (interceptor

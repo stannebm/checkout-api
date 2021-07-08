@@ -6,7 +6,9 @@
    [ring.util.response :as r]
    [stanne.cybersource.core :refer [config mk-params mk-signature]]
    [stanne.repo :as repo]
-   [stanne.views.cybersource-home :refer [home-view]]))
+   [stanne.views.cybersource-home :refer [home-view]]
+   [stanne.views.cybersource-receipt :refer [receipt-view]]
+   [clojure.string :as str]))
 
 (defn cybersource-home
   "Render a form that POST to CyberSource hosted checkout"
@@ -30,8 +32,8 @@
   (let [params (-> request form-parser :form-params)
         {:keys [req_reference_number decision]} params
         status (case decision
-                 "ACCEPT" "OK"
-                 "FAILED")]
+                 "ACCEPT" :OK
+                 :FAILED)]
     (log/info :event :cybersource-notify
               :params params
               :reference-no req_reference_number
@@ -43,10 +45,29 @@
                          :info {:cybersource-notify params}})
     (r/response "OK")))
 
-(defn cybersource-done-receipt
-  "Render receipt page"
-  [_]
-  (r/redirect "https://www.minorbasilicastannebm.com"))
+(defn cybersource-receipt
+  "Host-to-host callback from CyberSource"
+  [request]
+  (let [params (-> request form-parser :form-params)
+        {:keys [req_reference_number
+                auth_amount decision
+                transaction_id
+                req_card_number
+                signed_date_time
+                card_type_name]} params
+        transaction-time (-> signed_date_time
+                             (str/replace #"T" " ")
+                             (str/replace #"Z" ""))]
+    (r/response (receipt-view
+                 {:reference-no req_reference_number
+                  :amount (str "RM" auth_amount)
+                  :transaction-time transaction-time
+                  :transaction-id transaction_id
+                  :card-number req_card_number
+                  :card-type card_type_name
+                  :status (case decision
+                            "ACCEPT" :ok
+                            :failed)}))))
 
 (comment
   ;; notify params
