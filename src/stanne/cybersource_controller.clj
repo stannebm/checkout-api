@@ -30,17 +30,18 @@
   [{:keys [app-env]
     :as request}]
   (let [params (-> request form-parser :form-params)
-        {:keys [req_reference_number decision]} params
-        status (case decision
-                 "ACCEPT" :OK
-                 :FAILED)]
+        {:keys [req_reference_number decision]} params]
     (log/info :event :cybersource-notify
               :params params
               :reference-no req_reference_number
-              :status status)
+              :status (case decision
+                        "ACCEPT" :ok
+                        :failed))
     (repo/save-txn-info {:env app-env
-                         :provider :cybersource
-                         :status status
+                         :provider "cybersource"
+                         :status (case decision
+                                   "ACCEPT" "OK"
+                                   "FAILED")
                          :reference-no req_reference_number
                          :info {:cybersource-notify params}})
     (r/response "OK")))

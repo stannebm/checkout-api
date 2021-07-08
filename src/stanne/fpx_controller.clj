@@ -48,7 +48,7 @@
               :status status-simple
               :ac-full-info ac)
     (repo/save-txn-info {:env app-env
-                         :provider :fpx
+                         :provider "fpx"
                          :status status-simple
                          :reference-no reference-no
                          :info {:ac ac}})
