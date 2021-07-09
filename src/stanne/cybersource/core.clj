@@ -56,7 +56,7 @@
    ::unsigned_field_names ""
 
    ;; default address to pass payer authentication
-   ::bill_to_address_line1 "Charleston Rd"
+   ::bill_to_address_line1 "1295 Charleston Rd"
    ::bill_to_address_city "Mountain View"
    ::bill_to_address_state "CA"
    ::bill_to_address_postal_code "94043"
