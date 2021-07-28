@@ -54,8 +54,5 @@
 
 (comment
   (bank-list-request (settings/config :prod))
-
-;; bank list
   (bank-list (settings/config :prod)
              (settings/bank-mapping :prod)))
-;; => nil
