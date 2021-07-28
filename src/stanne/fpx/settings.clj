@@ -3,20 +3,22 @@
    [clojure.walk :as walk]))
 
 (defn config [env]
-  (merge {:exchange-id "EX00011982"
-          :seller-id "SE00013501"
-          :msg-token "01" ;; B2C
+  (merge {:msg-token "01" ;; B2C
           :fpx-version "7.0"}
          (case env
-           :prod {:env :prod
-                  :pki {:merchant-key "/etc/fpx/EX00011982.key"
+           :prod {:exchange-id "EX00011143"
+                  :seller-id "SE00046251"
+                  :env :prod
+                  :pki {:merchant-key "/etc/fpx/EX00011143.key" ;; issued on 28th Jul 2021
                         :fpx-cert "/etc/fpx/fpxprod_Merchant.cer"}
                   :endpoints {:tnc "https://www.mepsfpx.com.my/FPXMain/termsAndConditions.jsp"
                               :auth-enquiry "https://www.mepsfpx.com.my/FPXMain/sellerNVPTxnStatus.jsp"
                               :auth-request "https://www.mepsfpx.com.my/FPXMain/seller2DReceiver.jsp"
                               :auth-cancel "https://www.mepsfpx.com.my/FPXMain/FPXMain/sellerReqCancel.jsp"
                               :bank-list "https://www.mepsfpx.com.my/FPXMain/RetrieveBankList"}}
-           :dev {:env :dev
+           :dev {:exchange-id "EX00011982"
+                 :seller-id "SE00013501"
+                 :env :dev
                  :pki {:merchant-key "/etc/fpx/EX00011982.key"
                        :fpx-cert "/etc/fpx/fpxuat.cer"}
                  :endpoints {:tnc "https://www.mepsfpx.com.my/FPXMain/termsAndConditions.jsp"

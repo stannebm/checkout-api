@@ -53,6 +53,9 @@
     all-banks))
 
 (comment
-  ;; bank list
-  (bank-list (settings/config :dev)
-             (settings/bank-mapping :dev)))
+  (bank-list-request (settings/config :prod))
+
+;; bank list
+  (bank-list (settings/config :prod)
+             (settings/bank-mapping :prod)))
+;; => nil

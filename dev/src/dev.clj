@@ -5,7 +5,7 @@
 
 (clojure.tools.namespace.repl/set-refresh-dirs "dev" "src")
 
-(integrant.repl/set-prep! (constantly (system/config :dev)))
+(integrant.repl/set-prep! (constantly (system/config :prod)))
 
 (comment
   (go)
