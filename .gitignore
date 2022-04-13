@@ -41,3 +41,5 @@ build/
 #/.envrc
 /.env.prod
 /.env.local
+/.clj-kondo/
+/production/

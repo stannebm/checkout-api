@@ -1,4 +1,5 @@
-PROD := "arch"
+# PROD := "arch"
+PROD := "stanne"
 
 build: clean
 	lein uberjar
@@ -8,7 +9,7 @@ lint:
 
 release:
 	scp .env.prod ${PROD}:/etc/checkout-api/env
-	scp target/checkout-api-0.0.1-snapshot-standalone.jar \
+	scp target/checkout-api-0.0.1-SNAPSHOT-standalone.jar \
 		${PROD}:/root/checkout-api.jar
 	ssh ${PROD} "systemctl restart checkout-api"
 
